@@ -30,6 +30,10 @@ app.get('/api', (req, res) => {
   res.json({ message: 123 });
 });
 
+app.get('/appid', (req, res) => {
+  res.json({ appID: process.env.APP_ID });
+});
+
 app.post('/api', (req, res) => {
   req;
   console.log(req.body);
@@ -44,7 +48,6 @@ app.post('/api', (req, res) => {
   } 
 */
 app.post('/rtctoken', (req, res) => {
-  console.log('EE');
   res.send(
     generateTokenController({
       channel: req.body.channel,

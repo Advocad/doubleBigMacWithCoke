@@ -3,14 +3,17 @@ import { useStore } from '../../stores/rootStoreProvider';
 import { observer } from 'mobx-react';
 
 function MainPage() {
-  const { value, sendValue, fetchData } = useStore('testStore');
+  const { value, call, leave, sendValue, fetchData } = useStore('testStore');
 
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
+  const channel = 'CHANEL';
   return (
     <div>
+      <button onClick={() => call(true, channel)}>Join</button>
+      <button onClick={leave}>Leave</button>
       Value From Server: {value}
       <input onChange={e => sendValue(Number(e.target.value))} />
     </div>
