@@ -1,16 +1,13 @@
 import React from 'react';
+import { Routes, Route } from 'react-router';
+import { MainPage } from './pages';
 
 function App() {
-  const [data, setData] = React.useState(null);
-
-  console.log('sdfsdf');
-  React.useEffect(() => {
-    fetch('/api')
-      .then(res => res.json())
-      .then(data => setData(data.message));
-  }, [setData]);
-
-  return <>{data}</>;
+  return (
+    <Routes>
+      <Route path="/" element={<MainPage />}></Route>
+    </Routes>
+  );
 }
 
 export default App;
