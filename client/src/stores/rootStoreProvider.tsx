@@ -1,5 +1,5 @@
 import React, { useContext, createContext } from 'react';
-import TestStore from './testStore';
+import TestStore from './testStore/testStore';
 
 type Stores = {
   testStore: TestStore;

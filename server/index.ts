@@ -4,10 +4,16 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 
-console.log('sf');
+app.use(express.json());
 
 app.get('/api', (req, res) => {
-  res.json({ message: 'Hello from serverfe!' });
+  res.json({ message: 123 });
+});
+
+app.post('/api', (req, res) => {
+  console.log(req.body);
+
+  res.send({ value: req.body.value * 100 });
 });
 
 app.listen(PORT, () => {

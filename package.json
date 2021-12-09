@@ -13,6 +13,7 @@
     "@types/react-router-dom": "^5.3.2",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
     "@typescript-eslint/parser": "^5.6.0",
+    "axios": "^0.24.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-react": "^7.27.1",
@@ -25,7 +26,7 @@
     "react-router-dom": "^6.0.2"
   },
   "scripts": {
-    "start": "nodemon server/index.ts",
+    "start": "nodemon server/index.ts --ignore ./client",
     "prepare": "husky install",
     "pre-commit": "lint-staged",
     "lint": "eslint ."
