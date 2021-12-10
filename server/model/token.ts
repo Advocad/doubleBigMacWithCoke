@@ -1,17 +1,17 @@
 import Agora from 'agora-access-token';
+import { getConfig } from '../config';
 
 type TokenData = {
   isPublisher: boolean;
   channel: string;
 };
 
-export function generateTokenController(data: TokenData) {
+export function generateToken(data: TokenData) {
   const { isPublisher, channel } = data;
 
-  const appID = process.env.APP_ID || '';
-  const appCertificate = process.env.APP_CERTIFICATE || '';
+  const { appId, appCertificate } = getConfig();
 
-  if (!appID) {
+  if (!appId) {
     throw new Error('AppID not defined in ENV');
   }
 
@@ -26,7 +26,7 @@ export function generateTokenController(data: TokenData) {
 
   const role = isPublisher ? Agora.RtcRole.PUBLISHER : Agora.RtcRole.SUBSCRIBER;
   const token = Agora.RtcTokenBuilder.buildTokenWithUid(
-    appID,
+    appId,
     appCertificate,
     channel,
     uid,

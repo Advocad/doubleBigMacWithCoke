@@ -1,58 +1,36 @@
 import express from 'express';
-import { Server } from 'socket.io';
+import { Server, ServerOptions } from 'socket.io';
 import http from 'http';
-import { generateTokenController } from './token';
-import { config } from 'dotenv';
 
-const envResult = config();
+import { initDotEnv } from './utils';
+import { getConfig } from './config';
+import { registerSocket, registerMiddleware, registerControllers } from './register';
 
-if (envResult.error) {
-  throw envResult.error;
+function getExpressServerConfig(): Partial<ServerOptions> {
+  return {};
 }
 
-const PORT = process.env.PORT || 3001;
+function init() {
+  initDotEnv();
 
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server, {});
+  const app = express();
+  const server = http.createServer(app);
+  const io = new Server(server, getExpressServerConfig());
 
-io.on('connection', s => {
-  s.on('test', d => {
-    console.log(d);
+  registerMiddleware(app);
+  registerControllers(app);
+  registerSocket(io);
+
+  return server;
+}
+
+function run() {
+  const { port } = getConfig();
+  const server = init();
+
+  server.listen(port, () => {
+    console.log(`Server listening on ${port}`);
   });
-  console.log('Socket connectied');
-  s.send({ value: '123123' });
-});
+}
 
-app.use(express.json());
-
-app.get('/api', (req, res) => {
-  res.json({ message: 123 });
-});
-
-app.post('/api', (req, res) => {
-  req;
-  console.log(req.body);
-
-  res.send({ value: req.body.value * 100 });
-});
-
-/*
-  data: {
-    isPublisher: boolean
-    channel: string
-  } 
-*/
-app.post('/rtctoken', (req, res) => {
-  console.log('EE');
-  res.send(
-    generateTokenController({
-      channel: req.body.channel,
-      isPublisher: req.body.isPublisher,
-    })
-  );
-});
-
-server.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
-});
+run();
