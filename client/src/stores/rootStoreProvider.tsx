@@ -1,13 +1,16 @@
 import React, { useContext, createContext } from 'react';
+import RoomStore from './roomStore/roomStore';
 import TestStore from './testStore/testStore';
 
 type Stores = {
   testStore: TestStore;
+  roomStore: RoomStore;
 };
 
 function initStores(rootStore: RootStore) {
   return {
     testStore: new TestStore(rootStore),
+    roomStore: new RoomStore()
   };
 }
 
