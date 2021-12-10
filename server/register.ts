@@ -1,10 +1,12 @@
 import express, { Express } from 'express';
 import { Server } from 'socket.io';
+import { getConfig } from './config';
 
 import { configureRoutes } from './routes';
 import { IController, Class } from './types';
 
 export function registerSocket(io: Server) {
+  // Пока тут заглушки
   io.on('connection', s => {
     s.on('test', d => {
       console.log(d);
@@ -15,6 +17,7 @@ export function registerSocket(io: Server) {
 }
 
 export function registerMiddleware(app: Express) {
+  getConfig().mode === 'production' && app.use('/', express.static('./client/build'));
   app.use(express.json());
 }
 

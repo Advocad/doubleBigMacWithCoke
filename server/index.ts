@@ -1,21 +1,19 @@
 import express from 'express';
-import { Server, ServerOptions } from 'socket.io';
+import { Server } from 'socket.io';
 import http from 'http';
 
 import { initDotEnv } from './utils';
-import { getConfig } from './config';
+import { getConfig, getDbConnectionString, getSocketConfig } from './config';
 import { registerSocket, registerMiddleware, registerControllers } from './register';
-
-function getExpressServerConfig(): Partial<ServerOptions> {
-  return {};
-}
+import mongoose from 'mongoose';
 
 function init() {
   initDotEnv();
 
+  mongoose.connect(getDbConnectionString(getConfig().dbName));
   const app = express();
   const server = http.createServer(app);
-  const io = new Server(server, getExpressServerConfig());
+  const io = new Server(server, getSocketConfig());
 
   registerMiddleware(app);
   registerControllers(app);

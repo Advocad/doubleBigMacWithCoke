@@ -9,7 +9,6 @@ function MainPage() {
     fetchData();
   }, [fetchData]);
 
-  const channel = 'burger';
   return (
     <div>
       Value From Server: {value}
