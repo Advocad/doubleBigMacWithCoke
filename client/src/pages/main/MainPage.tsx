@@ -1,18 +1,46 @@
-import React, { useEffect } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useStore } from '../../stores/rootStoreProvider';
 import { observer } from 'mobx-react';
 
 function MainPage() {
-  const { value, sendValue, fetchData } = useStore('testStore');
+  const { init, join, leave } = useStore('roomStore');
+  const [nameRoom, setNameRoom] = useState('');
+  const [isRoom, setIsRoom] = useState(false);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+    setNameRoom(e.target.value)
+  }
+
+  const renderRoom = () => { 
+    if(isRoom) {
+      return <div>{nameRoom}</div>
+    }
+
+    return (
+      <div>
+        <div>Название комнаты</div>
+        <input onChange={handleChangeName} />
+      </div>
+    )
+  }
+
+  const joinToRoom = async () => {
+    setIsRoom(true)
+    await init({ userName: 'alex', nameRoom});
+    await join();
+  };
+
+  const leaveToRoom = () => {
+    setIsRoom(false)
+    leave()
+  };
+
 
   return (
     <div>
-      Value From Server: {value}
-      <input onChange={e => sendValue(Number(e.target.value))} />
+      {renderRoom()}
+      <button onClick={joinToRoom}>Подключиться</button>
+      <button onClick={leaveToRoom}>Выйти</button>
     </div>
   );
 }
