@@ -4,6 +4,6 @@ export function initDotEnv() {
   const envResult = config();
 
   if (envResult.error) {
-    throw envResult.error;
+    console.log(envResult.error);
   }
 }

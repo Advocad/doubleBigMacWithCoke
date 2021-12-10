@@ -1,4 +1,5 @@
 import { AppIdController, TokenController, ApiController } from './httpControllers';
+import { BurgerController } from './httpControllers/BurgersController';
 import { IController, Class } from './types';
 
 export function configureRoutes(
@@ -7,4 +8,5 @@ export function configureRoutes(
   registerRoute('/rtctoken', TokenController);
   registerRoute('/api', ApiController);
   registerRoute('/appid', AppIdController);
+  registerRoute('/burger', BurgerController);
 }
