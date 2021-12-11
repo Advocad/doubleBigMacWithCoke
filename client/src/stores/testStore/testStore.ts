@@ -5,7 +5,7 @@ import { io, Socket } from 'socket.io-client';
 
 export default class TestStore {
   constructor(private rootStore: RootStore) {
-    this.socket = io('/');
+    // this.socket = io('/');
     this.http = axios.create({
       baseURL: '/',
       headers: {
@@ -16,7 +16,7 @@ export default class TestStore {
     makeObservable(this);
   }
 
-  private socket: Socket;
+  // private socket: Socket;
   private http: Axios;
 
   @observable
@@ -30,7 +30,7 @@ export default class TestStore {
   @action sendValue = async (value: number) => {
     const res = await this.http.post('/api', JSON.stringify({ value }));
     this.setValue(res.data.value);
-    this.socket.emit('test', { e: 1231 });
+    // this.socket.emit('test', { e: 1231 });
   };
 
   @action
