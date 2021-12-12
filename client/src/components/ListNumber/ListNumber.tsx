@@ -1,21 +1,37 @@
-import { FC, useMemo } from 'react';
+import { FC, useCallback, useMemo } from 'react';
 import { ListNumberProps } from './type';
 
 import styles from './ListNumber.module.scss';
 
-const ListNumber: FC<ListNumberProps> = ({ numbers }) => {
+const ListNumber: FC<ListNumberProps> = ({ numbers, onAddNumber }) => {
+  const handlePasteField = useCallback(
+    digits => () => {
+      onAddNumber(digits);
+    },
+    [onAddNumber]
+  );
+
   const renderList = useMemo(() => {
     return numbers.map(number => {
       return (
-        <div className={styles.number}>
-          <div>{number.name}</div>
-          <div>{number.code}</div>
+        <div
+          className={styles.number}
+          key={number.digits}
+          onClick={handlePasteField(number.digits)}
+        >
+          <div>{number.nickname}</div>
+          <div>{number.digits}</div>
         </div>
       );
     });
-  }, [numbers]);
+  }, [handlePasteField, numbers]);
 
-  return <div className={styles.block}>{renderList}</div>;
+  return (
+    <div className={styles.block}>
+      <div className={styles.text}>Недавние</div>
+      {renderList}
+    </div>
+  );
 };
 
 export default ListNumber;
