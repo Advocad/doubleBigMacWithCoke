@@ -1,12 +1,16 @@
-import { AppIdController, TokenController, ApiController } from './httpControllers';
-import { BurgerController } from './httpControllers/BurgersController';
 import { IController, Class } from './types';
+
+import * as controllers from './httpControllers';
 
 export function configureRoutes(
   registerRoute: (route: string, controller: Class<IController>) => void
 ) {
-  registerRoute('/rtctoken', TokenController);
-  registerRoute('/api', ApiController);
-  registerRoute('/appid', AppIdController);
-  registerRoute('/burger', BurgerController);
+  Object.values(controllers).forEach(allControllers => {
+    console.log('Controller');
+    const controller = allControllers;
+    // @ts-ignore
+    console.log(controller.__baseUrl)
+    // @ts-ignore
+    registerRoute(controller.__baseUrl, controller);
+  });
 }

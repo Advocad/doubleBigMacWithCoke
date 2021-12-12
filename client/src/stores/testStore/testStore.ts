@@ -1,7 +1,6 @@
 import { RootStore } from '../rootStoreProvider';
 import { observable, action, computed, makeObservable } from 'mobx';
 import axios, { Axios } from 'axios';
-import { io, Socket } from 'socket.io-client';
 
 export default class TestStore {
   constructor(private rootStore: RootStore) {

@@ -6,37 +6,45 @@ import style from './style.module.scss';
 function CallPage() {
   const {
     initJanusConnection,
-    connectToPeer,
+    connectToPeerByDigits,
+    error,
     incomingCall,
     handleIncomingCall,
-    activateSound,
+    isConnectedToPeer,
     isJanusConnected,
   } = useStore('callStore');
 
-  const [name, setName] = useState('');
+  const { user } = useStore('userStore');
+
   const [peerName, setPeerName] = useState('');
+
+  useEffect(() => {
+    user && initJanusConnection(user.id);
+  }, [user, initJanusConnection]);
+
+  if (!user) return null;
 
   return (
     <div>
-      <div>
-        {window.isSecureContext}
-        {Object.keys(navigator).length}
-      </div>
-      <div>sdf</div>
-      <button onClick={() => initJanusConnection(name)}>Connect to Janus</button>
-      <input type="text" onChange={e => setName(e.target.value)} />
-
+      <h2>My number: {user.digits}</h2>
       {isJanusConnected && (
         <div>
+          <h3>We connected to janus</h3>
           <h2>Connect to peer</h2>
 
-          <input type="text" onChange={e => setPeerName(e.target.value)} />
-          <button disabled={!peerName} onClick={() => connectToPeer(peerName)}>
-            Connect to Peer
-          </button>
+          {!isConnectedToPeer && (
+            <div>
+              <input type="text" onChange={e => setPeerName(e.target.value)} />
+              <button disabled={!peerName} onClick={() => connectToPeerByDigits(peerName)}>
+                Connect to Peer
+              </button>
+            </div>
+          )}
         </div>
       )}
 
+      {isConnectedToPeer && <div>Connected To peer. Now talk</div>}
+      {error}
       {!!incomingCall && (
         <div>
           INCOMING CALL
@@ -44,7 +52,6 @@ function CallPage() {
           <button onClick={() => handleIncomingCall(false)}>Decline</button>
         </div>
       )}
-      <button onClick={() => activateSound()}>Sound</button>
     </div>
   );
 }

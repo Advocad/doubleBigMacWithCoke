@@ -1,14 +1,14 @@
 import React, { useContext, createContext } from 'react';
 import BurgerStore from './burgerStore/BurgerStore';
 import TestStore from './testStore/testStore';
-// import JanusStore from './JanusStore/JanusStore';
 import CallStore from './CallStore/CallStore';
+import UserStore from './UserStore/UserStore';
 
 type Stores = {
   testStore: TestStore;
   burgerStore: BurgerStore;
-  // janusStore: JanusStore;
   callStore: CallStore;
+  userStore: UserStore;
 };
 
 function initStores(rootStore: RootStore) {
@@ -16,6 +16,7 @@ function initStores(rootStore: RootStore) {
     testStore: new TestStore(rootStore),
     burgerStore: new BurgerStore(rootStore),
     callStore: new CallStore(rootStore),
+    userStore: new UserStore(rootStore),
   };
 }
 

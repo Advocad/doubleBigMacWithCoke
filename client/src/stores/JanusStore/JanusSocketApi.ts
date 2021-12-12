@@ -1,22 +1,15 @@
-import { RootStore } from '../rootStoreProvider';
-import { observable, action, makeObservable } from 'mobx';
-import axios, { Axios } from 'axios';
+import { action } from 'mobx';
 import shortid from 'shortid';
-// import * as Janus from 'janus-typescript-client'
 
 function str(data: any) {
   return JSON.stringify(data);
 }
-
-const pluginAudio = 'janus.plugin.videocall';
 
 export const janusUrl = 'wss://videos-webrtc.dev.avalab.io/websocket';
 
 export default class JanusSocketApi {
   constructor() {
     this.socket = new WebSocket(janusUrl, 'janus-protocol');
-
-    makeObservable(this);
   }
 
   private socket: WebSocket;

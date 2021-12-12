@@ -1,22 +1,12 @@
 import { RootStore } from '../rootStoreProvider';
 import { observable, action, makeObservable, computed } from 'mobx';
-import axios, { Axios } from 'axios';
-import shortid from 'shortid';
-import JanusApi, { janusUrl } from './JanusApi';
 import JanusSocketApi from './JanusSocketApi';
-// import * as Janus from 'janus-typescript-client'
-
-const ICE_SERVERS = [
-  { urls: 'stun:videos-webrtc.dev.avalab.io/restapi' },
-  // { urls: 'stun:videos-webrtc.dev.avalab.io/restapi', credential: 'as', username: 'asd' },
-];
 
 export default class JanusStore {
   constructor(private rootStore: RootStore) {
     makeObservable(this);
   }
 
-  private janusApi: JanusApi = new JanusApi(this.rootStore);
   private janusSocketApi: JanusSocketApi = new JanusSocketApi();
   private peerConnection: RTCPeerConnection | null = null;
   public analyzer: AnalyserNode | null = null;
@@ -83,9 +73,6 @@ export default class JanusStore {
   }
 
   @action preConnect = async () => {
-    // this.makePeerConnection();
-    // this.makeLocalStream();
-
     await this.janusSocketApi.awaitSocketConnected();
     await this.createSession();
     await this.attachPlugin();
@@ -100,16 +87,6 @@ export default class JanusStore {
     }
 
     return await this.janusSocketApi.registerUser(this.sessionId, this.handle_id, name);
-  }
-
-  @action.bound
-  connect(name: string) {
-    if (!this.peerConnection) return;
-
-    this.peerConnection.createOffer({ offerToReceiveAudio: true }).then(e => {
-      this.janusApi.sendOffer({ sdp: e.sdp || '', username: name });
-      this.peerConnection && this.peerConnection.setLocalDescription(e);
-    });
   }
 
   @action.bound
@@ -138,16 +115,6 @@ export default class JanusStore {
   }
 
   @action.bound
-  async accept(offer: { sdp: string }) {
-    this.peerConnection?.setRemoteDescription(
-      new RTCSessionDescription({ type: 'offer', sdp: offer.sdp })
-    );
-
-    const result = await this.peerConnection?.createAnswer();
-    result && this.janusApi.sendAccept({ sdp: result.sdp || '' });
-  }
-
-  @action.bound
   async sendAccept(answer: RTCSessionDescriptionInit) {
     if (!this.sessionId || !this.handle_id) {
       throw new Error('Cant sendAccept; No session');
@@ -164,17 +131,6 @@ export default class JanusStore {
   handleEvents(data: any) {
     const transformed = this.transformEventData(data);
     transformed && this.eventHandler(transformed);
-    // if (data.janus === 'event') {
-    //   const incomingEvent = data?.plugindata?.data?.result;
-    //   if (incomingEvent?.event === 'incomingcall') {
-    //     this.accept(data?.jsep);
-    //   }
-
-    //   if (incomingEvent?.event === 'accepted' && data?.jsep) {
-    //     this.peerConnection?.setRemoteDescription({ type: 'answer', sdp: data?.jsep.sdp });
-    //     // this.remoteStream =
-    //   }
-    // }
   }
 
   public transformEventData(data: any): JanusEvents | null {

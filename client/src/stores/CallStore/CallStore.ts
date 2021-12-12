@@ -1,15 +1,12 @@
 import { RootStore } from '../rootStoreProvider';
-import { observable, action, makeObservable, computed } from 'mobx';
-import axios, { Axios } from 'axios';
-import shortid from 'shortid';
+import { observable, action, makeObservable } from 'mobx';
 import JanusStore, { JanusEvents } from '../JanusStore/JanusStore';
-import { off } from 'process';
-import { debug } from 'console';
 
 const ICE_SERVERS = [{ urls: 'stun:stun.l.google.com:19302' }];
 
 const peerConfiguration = {
   iceServers: ICE_SERVERS,
+  // Возможно эти опции ещё понадобятся
   // iceCandidatePoolSize: 10,
   // iceTransportPolicy: 'all' as const,
 };
@@ -30,33 +27,23 @@ export default class CallStore {
       ev.candidate && this.handleLocalFoundICE(ev.candidate);
 
     this.peerConnection.onicegatheringstatechange = ev => this.handleLocalICEChanged(ev);
+
     this.peerConnection.ontrack = ev => {
-      console.log('ON TRACK');
       ev.streams[0].getTracks().forEach(track => {
-        console.log('ADDED  TRACK', track);
         this.remoteStream?.addTrack(track);
+
+        this.activateSound()
       });
     };
-
-    // this.peerConnection.onicegatheringstatechange = ev => ev.candidate && this.handleLocalFoundICE(ev.candidate);
   }
 
   private janusStore: JanusStore = new JanusStore(this.rootStore);
-  private peerConnection: RTCPeerConnection = new RTCPeerConnection(
-    {
-      ...peerConfiguration,
-      // @ts-ignore
-      sdpSemantics: 'unified-plan',
-    },
+  private peerConnection: RTCPeerConnection = new RTCPeerConnection({
+    ...peerConfiguration,
+    // Для гуглохрома нужная штука
     // @ts-ignore
-    {
-      optional: [
-        {
-          DtlsSrtpKeyAgreement: true,
-        },
-      ],
-    }
-  );
+    sdpSemantics: 'unified-plan',
+  });
   private localStream: MediaStream | null = null;
   private remoteStream = new MediaStream();
 
@@ -66,8 +53,19 @@ export default class CallStore {
     isUserRegistering: false,
   };
 
+  @observable error = '';
+
+  @observable
+  public peer: string | null = null;
+
+  @observable
+  public isConnectedToPeer = false;
+
   @observable
   public isJanusConnected = false;
+
+  @observable
+  public isSoundActive = false;
 
   @observable
   public incomingCall: { peername: string; type: 'offer'; sdp: string } | null = null;
@@ -78,12 +76,12 @@ export default class CallStore {
 
     if (accept) {
       await this.initAudioAndSendTracks();
-      // this.activateSound();
       this.peerConnection.setRemoteDescription(new RTCSessionDescription(this.incomingCall));
       const answer = await this.peerConnection.createAnswer();
-      this.peerConnection.setLocalDescription(answer)
+      this.peerConnection.setLocalDescription(answer);
       // this.peerConnection.restartIce();
       this.janusStore.sendAccept(answer);
+      this.isConnectedToPeer = true;
     }
 
     this.incomingCall = null;
@@ -94,17 +92,14 @@ export default class CallStore {
       throw new Error('Stream remote is not defined');
     }
 
-    console.log('STATUS');
-    console.log(this.peerConnection.iceConnectionState);
-    // console.log(this.peerConnection.connectionState);
     const ctx = new AudioContext();
     const spe = ctx.createAnalyser();
 
     spe.smoothingTimeConstant = 0.8;
     spe.fftSize = 1024;
     const mic = ctx.createMediaStreamSource(this.remoteStream);
-    const bufferLength = spe.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
+    // const bufferLength = spe.frequencyBinCount;
+    // const dataArray = new Uint8Array(bufferLength);
 
     mic.connect(ctx.destination);
     // function draw() {
@@ -114,6 +109,7 @@ export default class CallStore {
     // }
 
     // draw();
+    this.isSoundActive = true
   }
 
   @action.bound
@@ -142,7 +138,7 @@ export default class CallStore {
   public async handleAnswer(data: { type: 'answer'; sdp: string }) {
     this.peerConnection.setRemoteDescription(data);
 
-    // this.activateSound();
+    this.isConnectedToPeer = true;
   }
 
   @action.bound
@@ -156,6 +152,20 @@ export default class CallStore {
   }
 
   @action.bound
+  public async connectToPeerByDigits(digits: string) {
+    const result = await this.rootStore.stores.userStore.getUser({ digits });
+
+    console.log(result)
+    if (result.type === 'error') {
+      this.error = result.error;
+
+      return;
+    }
+
+    this.connectToPeer(result.data.id);
+  }
+
+  @action.bound
   public async connectToPeer(peerName: string) {
     await this.initAudioAndSendTracks();
     const offer = await this.peerConnection.createOffer({
@@ -166,7 +176,7 @@ export default class CallStore {
     this.peerConnection.setLocalDescription(offer);
     const offerResult = await this.janusStore.sendOffer(peerName, offer.sdp || '');
 
-    console.log('OFFER ERROR', offerResult.plugindata.data);
+    this.error = offerResult.plugindata.data.error || '';
   }
 
   @action.bound
@@ -192,5 +202,3 @@ export default class CallStore {
     }
   }
 }
-
-type EventTypes = 'incoming_call' | 'answer';
