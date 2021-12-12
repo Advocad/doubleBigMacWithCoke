@@ -25,6 +25,8 @@ export default class UserStore {
   @observable error: string | null = null;
   @observable isUserLoginning = true;
   @observable hasVisited = false;
+  @observable recentCalls: { digits: string; nickname: string }[] = [];
+  @observable isRegistration = false
 
   @computed
   get isUserLogged() {
@@ -53,8 +55,28 @@ export default class UserStore {
       this.hasVisited = true;
     }
 
+    let recentCalls = [];
+    try {
+      const value = localStorage.getItem('recentCalls');
+      recentCalls = JSON.parse(value || '[]');
+    } catch (e) {
+      localStorage.removeItem('recentCalls');
+    }
+
+    this.recentCalls = recentCalls;
+
     localStorage.setItem('hasVisited', '1');
     this.isUserLoginning = false;
+  }
+
+  @action.bound
+  public addRecentCall(call: { digits: string; nickname: string }) {
+    const isInArray = this.recentCalls.find(item => item.digits === call.digits);
+
+    if (isInArray) return;
+
+    this.recentCalls.push(call);
+    localStorage.setItem('recentCalls', JSON.stringify(this.recentCalls));
   }
 
   @action.bound
@@ -94,5 +116,10 @@ export default class UserStore {
     } else {
       this.user = answer.data.data;
     }
+  }
+
+  @action.bound
+  public toggleForm(value: boolean) {
+    this.isRegistration = value;
   }
 }

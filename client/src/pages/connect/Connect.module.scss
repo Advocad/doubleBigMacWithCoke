@@ -40,9 +40,16 @@
   font-style: normal;
   font-weight: normal;
   font-size: 36px;
-  line-height: 49px;
 
   color: $color-user;
+  display: inline-block;
+  position: relative;
+}
+
+.userNumber {
+  display: block;
+  font-size: 24px;
+  color: $color-call-number;
 }
 
 .btnPhone {
@@ -52,8 +59,11 @@
 }
 
 .status {
-  width: 50px;
-  height: 50px;
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  top: 0;
+  right: -18px;
   border-radius: 100%;
   &.connecting {
     background: orange;
@@ -61,4 +71,12 @@
   &.online {
     background: green;
   }
+}
+
+.fieldNumber {
+  text-align: center;
+}
+
+.topBlock {
+  text-align: center;
 }

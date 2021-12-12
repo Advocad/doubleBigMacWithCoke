@@ -8,6 +8,7 @@ const TextField: FC<TextFieldProps> = ({
   placeholder,
   className,
   onChange,
+  onFocus,
   value,
   ...props
 }) => {
@@ -20,6 +21,7 @@ const TextField: FC<TextFieldProps> = ({
       <input
         className={className}
         type={type}
+        onFocus={onFocus}
         placeholder={placeholder}
         onChange={handleChange}
         value={value}

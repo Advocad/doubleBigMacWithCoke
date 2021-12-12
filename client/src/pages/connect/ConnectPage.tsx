@@ -6,19 +6,8 @@ import { Button, Icon, TextField } from '../../ui';
 import styles from './Connect.module.scss';
 import clsx from 'clsx';
 
-const array = [
-  {
-    name: 'Арртем',
-    code: 1234,
-  },
-  {
-    name: 'Арртем2',
-    code: 312,
-  },
-];
-
 const ConnectPage = () => {
-  const { user } = useStore('userStore');
+  const { user, recentCalls } = useStore('userStore');
   const { incomingCall, peerInfo, connectToPeerByDigits, handleIncomingCall, isJanusConnected } =
     useStore('callStore');
 
@@ -36,12 +25,27 @@ const ConnectPage = () => {
     [number]
   );
 
+  const handleRemoveNumber = useCallback(() => {
+    setNumber(number.slice(0, -1));
+    if (number.length === 1) {
+      setIsNumLock(false);
+    }
+  }, [number]);
+
+  const handleAddNumber = useCallback(code => {
+    setNumber(String(code));
+  }, []);
+
+  const handleConnection = useCallback(() => {
+    connectToPeerByDigits(number);
+  }, [number, connectToPeerByDigits]);
+
   const renderBuutton = useMemo(() => {
     if (isNumLock) {
       return (
         <>
-          <NumBoard OnChangeNumber={onChangeNumber} />
-          <Button className={styles.btnPhone} onClick={() => connectToPeerByDigits(number)}>
+          <NumBoard OnChangeNumber={onChangeNumber} OnRemoveNumber={handleRemoveNumber} />
+          <Button className={styles.btnPhone} onClick={handleConnection}>
             <Icon name="phone" />
           </Button>
         </>
@@ -58,21 +62,30 @@ const ConnectPage = () => {
         </Button>
       </>
     );
-  }, [handleLock, isNumLock, onChangeNumber]);
+  }, [handleLock, handleRemoveNumber, handleConnection, isNumLock, onChangeNumber]);
 
   return (
     <div className={styles.container}>
-      <div>
-        <div
-          className={clsx(styles.status, {
-            [styles.connecting]: !isJanusConnected,
-            [styles.online]: isJanusConnected,
-          })}
-        ></div>
-        <div className={styles.user}>{user?.nickname}</div>
-        <div className={styles.user}>{user?.digits}</div>
-        <TextField placeholder="Цифры" value={number} />
-        <ListNumber numbers={array} />
+      <div className={styles.topBlock}>
+        <div className={styles.user}>
+          {user?.nickname}
+          <div
+            className={clsx(styles.status, {
+              [styles.connecting]: !isJanusConnected,
+              [styles.online]: isJanusConnected,
+            })}
+          />
+        </div>
+        <div className={clsx(styles.user, styles.userNumber)}>#{user?.digits}</div>
+        <TextField
+          placeholder="Цифры"
+          onFocus={() => setIsNumLock(true)}
+          value={number}
+          className={styles.fieldNumber}
+        />
+        {recentCalls.length > 0 && (
+          <ListNumber numbers={recentCalls} onAddNumber={handleAddNumber} />
+        )}
       </div>
       <div className={styles.bottom}>{renderBuutton}</div>
       {incomingCall && peerInfo && (

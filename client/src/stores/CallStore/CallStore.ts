@@ -203,6 +203,13 @@ export default class CallStore {
 
     this.peerInfo = result.data;
 
+    if (this.peerInfo?.digits && this.peerInfo?.nickname) {
+      this.rootStore.stores.userStore.addRecentCall({
+        digits: this.peerInfo?.digits,
+        nickname: this.peerInfo?.nickname,
+      });
+    }
+
     this.connectToPeer(result.data.id);
   }
 
@@ -230,6 +237,13 @@ export default class CallStore {
     });
 
     this.peerInfo = { ...peer.data, id: this.incomingCall.peername };
+
+    if (this.peerInfo?.digits && this.peerInfo?.nickname) {
+      this.rootStore.stores.userStore.addRecentCall({
+        digits: this.peerInfo?.digits,
+        nickname: this.peerInfo?.nickname,
+      });
+    }
   }
 
   @action.bound

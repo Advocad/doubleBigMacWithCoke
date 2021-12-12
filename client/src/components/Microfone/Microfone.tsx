@@ -11,6 +11,8 @@ const Microfone: FC<MicrofoneProps> = ({ isActiveMicrofone, handlePressOn, handl
     <Button
       onMouseDown={handlePressOn}
       onMouseUp={handlePressOff}
+      onTouchStart={handlePressOff}
+      onTouchEnd={handlePressOff}
       className={clsx(styles.btnMicrofone, { [styles.active]: isActiveMicrofone })}
     >
       <Icon name={isActiveMicrofone ? 'microfone-active' : 'microfone'} />

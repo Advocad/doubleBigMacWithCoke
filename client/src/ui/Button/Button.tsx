@@ -8,6 +8,8 @@ const Button: FC<ButtonProps> = ({
   children,
   disabled,
   onMouseDown,
+  onTouchEnd,
+  onTouchStart,
   onMouseUp,
   onClick,
   className,
@@ -22,6 +24,8 @@ const Button: FC<ButtonProps> = ({
       disabled={disabled}
       onClick={onClick}
       onMouseUp={onMouseUp}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
       onMouseDown={onMouseDown}
       value={value}
       {...props}

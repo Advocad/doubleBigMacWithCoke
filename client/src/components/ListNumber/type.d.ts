@@ -1,8 +1,9 @@
 type NumbersType = {
-  name: string;
-  code: number;
+  nickname: string;
+  digits: string;
 };
 
 export type ListNumberProps = {
   numbers: NumbersType[];
+  onAddNumber: (code) => void;
 };
