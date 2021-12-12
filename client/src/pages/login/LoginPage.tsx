@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
 import { PageStep } from '../../components/PageConstructor/types';
 import { useStore } from '../../stores/rootStoreProvider';
@@ -46,8 +47,10 @@ const Login = () => {
   }
 
   function handleSignup() {
-    loginUser({ digits, password });
+    loginUser({ digits, password }).then(() => {
+      changeStep(PageStep.CONNECT)
+    });
   }
 };
 
-export { Login };
+export default observer(Login);

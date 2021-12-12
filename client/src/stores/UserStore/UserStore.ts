@@ -28,6 +28,7 @@ export default class UserStore {
 
   @computed
   get isUserLogged() {
+    debugger;
     return !!this.user;
   }
 

@@ -38,7 +38,7 @@ function App() {
       changeStep(PageStep.CALL);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [user])
 
   if (isUserLoginning) {
     return <div>Loginning...</div>;

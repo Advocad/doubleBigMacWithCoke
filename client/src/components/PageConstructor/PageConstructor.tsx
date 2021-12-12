@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { FC } from "react";
-import { CallPage, ConnectPage, Login, MainPage, RegistrationPage } from "../../pages";
+import { CallPage, ConnectPage, LoginPage, MainPage, RegistrationPage } from "../../pages";
 import { PageStep } from "./types";
 
 type Props = {
@@ -14,7 +14,7 @@ const PageConstructor: FC<Props> = ({step}) => {
       component: <MainPage />,
     },
     login: {
-      component: <Login />,
+      component: <LoginPage />,
     },
     registration: {
       component: <RegistrationPage />,
