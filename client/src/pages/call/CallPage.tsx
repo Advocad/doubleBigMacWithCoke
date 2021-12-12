@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { observer } from 'mobx-react';
 import { useEffect, useState } from 'react';
 import { Listener, Microfone } from '../../components';
@@ -11,6 +12,7 @@ const CallPage = () => {
     peerInfo,
     peerIsTalking,
     toggleHold,
+    isConnectedToPeer,
     isOnHold,
     hangup,
     turnMicOn,
@@ -42,11 +44,16 @@ const CallPage = () => {
           <Icon name="close" />
         </Button>
         <Microfone
+          disabled={!isConnectedToPeer}
           isActiveMicrofone={isMicActive || isOnHold}
           handlePressOn={handleOn}
           handlePressOff={handleOff}
         />
-        <Button onClick={toggleHold} className={styles.btnLock}>
+        <Button
+          onClick={toggleHold}
+          disabled={!isConnectedToPeer}
+          className={clsx(styles.btnLock, { [styles.active]: isOnHold })}
+        >
           <Icon name="lock" />
         </Button>
       </div>

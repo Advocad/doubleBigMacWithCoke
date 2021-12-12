@@ -6,9 +6,15 @@ import { MicrofoneProps } from './types';
 
 import styles from './Microfone.module.scss';
 
-const Microfone: FC<MicrofoneProps> = ({ isActiveMicrofone, handlePressOn, handlePressOff }) => {
+const Microfone: FC<MicrofoneProps> = ({
+  disabled,
+  isActiveMicrofone,
+  handlePressOn,
+  handlePressOff,
+}) => {
   return (
     <Button
+      disabled={disabled}
       onMouseDown={handlePressOn}
       onMouseUp={handlePressOff}
       onTouchStart={handlePressOff}

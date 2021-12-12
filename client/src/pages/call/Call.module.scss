@@ -47,6 +47,9 @@
   right: -35px;
   top: 16px;
   border: 0;
+  &.active {
+    background: rgb(165, 202, 165);
+  }
 }
 
 .btnCloseText {
