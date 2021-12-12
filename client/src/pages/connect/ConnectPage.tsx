@@ -57,9 +57,6 @@ const ConnectPage = () => {
         <Button onClick={handleLock} className={styles.btnNumber}>
           <Icon name="nuumber" />
         </Button>
-        <Button className={styles.btnSetting} classNameText={styles.btnSettingText}>
-          <Icon name="setting" />
-        </Button>
       </>
     );
   }, [handleLock, handleRemoveNumber, handleConnection, isNumLock, onChangeNumber]);
@@ -67,7 +64,8 @@ const ConnectPage = () => {
   return (
     <div className={styles.container}>
       <div className={styles.logout} onClick={logout}>
-        Logout
+        <span>Logout</span>
+        <Icon name="setting"  className={styles.iconSetting}/>
       </div>
       <div className={styles.topBlock}>
         <div className={styles.user}>

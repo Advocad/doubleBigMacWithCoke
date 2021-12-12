@@ -32,6 +32,7 @@
 
 .btnNumber {
   width: 184px;
+  background: #2a5a465e;
 }
 
 .user {
@@ -47,6 +48,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  display: inline-block;
 }
 
 .userNumber {
@@ -65,6 +68,9 @@
   width: 15px;
   height: 15px;
   border-radius: 100%;
+  position: absolute;
+  top: 5px;
+  right: -15px;
 
   margin-left: 10px;
   &.connecting {
@@ -90,4 +96,9 @@
   font-weight: 300;
   cursor: pointer;
   color: #8c8c85;
+}
+
+.iconSetting {
+  vertical-align: middle;
+  margin-left: 10px;
 }
