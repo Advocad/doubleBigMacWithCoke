@@ -1,10 +1,18 @@
 import { observer } from 'mobx-react';
+import { PageStep } from '../../components/PageConstructor/types';
+import { useStore } from '../../stores/rootStoreProvider';
 import { Button } from '../../ui';
 
 import styles from './Main.module.scss';
 import Logo from './shared/Logo/Logo';
 
 function MainPage() {
+  const { changeStep } = useStore('routeStore');
+
+  const handleChangePage = () => {
+    changeStep(PageStep.LOGIN)
+  }
+  
   return (
     <div className={styles.container}>
       <div>
@@ -13,7 +21,7 @@ function MainPage() {
           Могу брякнуть человеку, он подскочит, обрисуй ему ситуевинку, порешаете по ходу
         </div>
       </div>
-      <Button>Продолжить</Button>
+      <Button onClick={handleChangePage}>Продолжить</Button>
     </div>
   );
 }

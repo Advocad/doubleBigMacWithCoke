@@ -1,13 +1,20 @@
+import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
+import { PageStep } from '../../components/PageConstructor/types';
 import { useStore } from '../../stores/rootStoreProvider';
 import { Button, TextField } from '../../ui';
 import styles from './Login.module.scss';
 
 const Login = () => {
   const { loginUser } = useStore('userStore');
+  const { changeStep } = useStore('routeStore');
 
   const [digits, setDigits] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleChangeStep = () => {
+    changeStep(PageStep.REGISTRATION)
+  }
 
   return (
     <div className={styles.container}>
@@ -22,7 +29,7 @@ const Login = () => {
           Войти
         </Button>
         <div className={styles.text}>если у вас нет аккаунта</div>
-        <Button fullWidth>Регистрация</Button>
+        <Button fullWidth onClick={handleChangeStep}>Регистрация</Button>
       </div>
     </div>
   );
@@ -40,8 +47,10 @@ const Login = () => {
   }
 
   function handleSignup() {
-    loginUser({ digits, password });
+    loginUser({ digits, password }).then(() => {
+      changeStep(PageStep.CONNECT)
+    });
   }
 };
 
-export { Login };
+export default observer(Login);
