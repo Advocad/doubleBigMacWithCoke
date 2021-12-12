@@ -4,15 +4,20 @@ import { NumBoardProps } from './types';
 
 import styles from './NumBoard.module.scss';
 
-const NumBoard: FC<NumBoardProps> = ({ OnChangeNumber }) => {
-  const keypadKeys: string[] = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '-', '0', '.'];
+const NumBoard: FC<NumBoardProps> = ({ OnChangeNumber, OnRemoveNumber }) => {
+  const keypadKeys: string[] = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '<-', '0', ''];
 
   const onButtonClick = useCallback(
     value => () => {
+      if (value === '<-') {
+        return OnRemoveNumber();
+      }
       OnChangeNumber(value);
     },
-    [OnChangeNumber]
+    [OnChangeNumber, OnRemoveNumber]
   );
+
+  const keyValid = useCallback(key => key === '', []);
 
   return (
     <div className={styles.container}>
@@ -22,7 +27,7 @@ const NumBoard: FC<NumBoardProps> = ({ OnChangeNumber }) => {
           onClick={onButtonClick(key)}
           value={key}
           classNameText={styles.btnNumText}
-          //disabled={!keyValid(inputValue, key)}
+          disabled={keyValid(key)}
         >
           {key}
         </Button>

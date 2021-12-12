@@ -8,9 +8,17 @@
   line-height: 36px;
 
   color: $color-list;
+
+  margin-top: 40px;
 }
 
 .number {
   display: flex;
   justify-content: space-between;
+}
+
+.text {
+  text-align: left;
+  font-size: 16px;
+  color: $color-call-number;
 }
