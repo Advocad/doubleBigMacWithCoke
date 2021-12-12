@@ -25,3 +25,19 @@
     box-shadow: 0 0 0 40px rgba(109, 203, 94, 0.06);
   }
 }
+
+.decibelLabel {
+  color: gray;
+  // position: absolute;
+  // top: 47px;
+  // left: 51px;
+  // position: relative;
+}
+
+.buttonText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}

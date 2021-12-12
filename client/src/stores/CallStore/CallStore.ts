@@ -153,6 +153,10 @@ export default class CallStore {
       track.enabled = false;
     });
 
+    if (this.localStream) {
+      this.localDbMeter = new Dbmeter(this.localStream);
+    }
+
     this.remoteDbMeter = new Dbmeter(this.remoteStream);
 
     this.remoteDbMeter.spe.connect(this.remoteDbMeter.ctx.destination);
