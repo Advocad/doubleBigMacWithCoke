@@ -11,6 +11,15 @@ const peerConfiguration = {
   // iceTransportPolicy: 'all' as const,
 };
 
+function getNewPeerConnection() {
+  return new RTCPeerConnection({
+    ...peerConfiguration,
+    // Для гуглохрома нужная штука
+    // @ts-ignore
+    sdpSemantics: 'unified-plan',
+  });
+}
+
 export default class CallStore {
   constructor(private rootStore: RootStore) {
     makeObservable(this);
@@ -32,18 +41,13 @@ export default class CallStore {
       ev.streams[0].getTracks().forEach(track => {
         this.remoteStream?.addTrack(track);
 
-        this.activateSound()
+        this.activateSound();
       });
     };
   }
 
   private janusStore: JanusStore = new JanusStore(this.rootStore);
-  private peerConnection: RTCPeerConnection = new RTCPeerConnection({
-    ...peerConfiguration,
-    // Для гуглохрома нужная штука
-    // @ts-ignore
-    sdpSemantics: 'unified-plan',
-  });
+  private peerConnection: RTCPeerConnection = getNewPeerConnection();
   private localStream: MediaStream | null = null;
   private remoteStream = new MediaStream();
 
@@ -79,7 +83,6 @@ export default class CallStore {
       this.peerConnection.setRemoteDescription(new RTCSessionDescription(this.incomingCall));
       const answer = await this.peerConnection.createAnswer();
       this.peerConnection.setLocalDescription(answer);
-      // this.peerConnection.restartIce();
       this.janusStore.sendAccept(answer);
       this.isConnectedToPeer = true;
     }
@@ -109,7 +112,17 @@ export default class CallStore {
     // }
 
     // draw();
-    this.isSoundActive = true
+    this.isSoundActive = true;
+  }
+
+  @action.bound deactivateSound() {
+    this.remoteStream.getTracks().forEach(track => {
+      track.stop();
+    });
+
+    this.localStream?.getAudioTracks().forEach(track => {
+      track.enabled = false;
+    });
   }
 
   @action.bound
@@ -155,7 +168,6 @@ export default class CallStore {
   public async connectToPeerByDigits(digits: string) {
     const result = await this.rootStore.stores.userStore.getUser({ digits });
 
-    console.log(result)
     if (result.type === 'error') {
       this.error = result.error;
 
@@ -187,6 +199,25 @@ export default class CallStore {
     if (e.event === 'answer') {
       this.handleAnswer(e.data);
     }
+    if (e.event === 'hangup') {
+      this.hangup();
+    }
+  }
+
+  @action.bound
+  public hangup() {
+    this.peerConnection.close();
+
+    this.resetState();
+  }
+
+  @action.bound
+  public resetState() {
+    this.peer = null;
+    this.isConnectedToPeer = false;
+
+    this.peerConnection = getNewPeerConnection();
+    this.deactivateSound();
   }
 
   @action.bound

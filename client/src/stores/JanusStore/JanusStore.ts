@@ -2,16 +2,16 @@ import { RootStore } from '../rootStoreProvider';
 import { observable, action, makeObservable, computed } from 'mobx';
 import JanusSocketApi from './JanusSocketApi';
 
+const ACK_INTERVAL = 20000;
 export default class JanusStore {
   constructor(private rootStore: RootStore) {
     makeObservable(this);
   }
 
   private janusSocketApi: JanusSocketApi = new JanusSocketApi();
-  private peerConnection: RTCPeerConnection | null = null;
-  public analyzer: AnalyserNode | null = null;
-  public localStream: MediaStream | null = null;
-  public remoteStream: MediaStream = new MediaStream();
+  // public analyzer: AnalyserNode | null = null;
+  // public localStream: MediaStream | null = null;
+  // public remoteStream: MediaStream = new MediaStream();
 
   @observable
   private sessionId: number | null = null;
@@ -25,30 +25,30 @@ export default class JanusStore {
   };
 
   private eventHandler = (data: JanusEvents) => {};
+  ackHandler: number | null = null;
 
   @action.bound
   public setEventHandler(handler: (data: JanusEvents) => void) {
     this.eventHandler = handler;
   }
 
-  @action.bound
-  async makeLocalStream() {
-    const localstream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-    localstream.getTracks().forEach(track => {
-      this.peerConnection?.addTrack(track, localstream);
-    });
-
-    this.localStream = localstream;
-  }
   @computed
   public get isLoading() {
     return !Object.values(this.states).every(i => i === false);
   }
 
   @action.bound
-  handleRemotePeer(answer: RTCSessionDescriptionInit) {
-    this.peerConnection?.setRemoteDescription(new RTCSessionDescription(answer));
+  spamAckByTimeout() {
+    this.ackHandler = window.setInterval(() => {
+      if (!this.sessionId) {
+        this.ackHandler && window.clearInterval(this.ackHandler);
+        this.ackHandler = null;
+
+        return;
+      }
+
+      this.janusSocketApi.sendAck(this.sessionId);
+    }, ACK_INTERVAL);
   }
 
   @action.bound
@@ -75,6 +75,7 @@ export default class JanusStore {
   @action preConnect = async () => {
     await this.janusSocketApi.awaitSocketConnected();
     await this.createSession();
+    this.spamAckByTimeout();
     await this.attachPlugin();
 
     this.janusSocketApi.subscribeToEvents(this.handleEvents);
@@ -101,17 +102,6 @@ export default class JanusStore {
       session_id: this.sessionId,
       handle_id: this.handle_id,
     });
-  }
-
-  @action.bound
-  play() {
-    if (!this.remoteStream) {
-      throw new Error('Stream remote is not defined');
-    }
-
-    const ctx = new AudioContext();
-    const mic = ctx.createMediaStreamSource(this.remoteStream);
-    mic.connect(ctx.destination);
   }
 
   @action.bound
@@ -153,6 +143,15 @@ export default class JanusStore {
         data: {
           type: 'answer',
           sdp: data.jsep.sdp as string,
+        },
+      };
+    }
+
+    if (result?.event === 'incomingcall' || data.janus === 'hangup') {
+      return {
+        event: 'hangup',
+        data: {
+          reason: 'yes',
         },
       };
     }
@@ -225,5 +224,11 @@ export type JanusEvents =
       data: {
         type: 'answer';
         sdp: string;
+      };
+    }
+  | {
+      event: 'hangup';
+      data: {
+        reason: string;
       };
     };

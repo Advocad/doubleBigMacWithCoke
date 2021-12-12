@@ -39,6 +39,14 @@ export default class JanusSocketApi {
   }
 
   @action.bound
+  public sendAck(session_id: number) {
+    this.send({
+      janus: 'keepalive',
+      session_id,
+    });
+  }
+
+  @action.bound
   private async sendRequest(data: any) {
     const transaction = this.send(data);
 

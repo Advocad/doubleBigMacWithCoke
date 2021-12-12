@@ -12,6 +12,7 @@ function CallPage() {
     handleIncomingCall,
     isConnectedToPeer,
     isJanusConnected,
+    hangup,
   } = useStore('callStore');
 
   const { user } = useStore('userStore');
@@ -52,6 +53,7 @@ function CallPage() {
           <button onClick={() => handleIncomingCall(false)}>Decline</button>
         </div>
       )}
+      {isConnectedToPeer && <button onClick={hangup}> Повесить трубу</button>}
     </div>
   );
 }
