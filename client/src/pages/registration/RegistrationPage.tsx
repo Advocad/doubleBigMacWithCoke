@@ -1,7 +1,14 @@
+import { PageStep } from '../../components/PageConstructor/types';
+import { useStore } from '../../stores/rootStoreProvider';
 import { Button, TextField } from '../../ui';
 import styles from './Registration.module.scss';
 
 const RegistrationPage = () => {
+  const { changeStep } = useStore('routeStore');
+
+  const handleChangeStep = () => {
+    changeStep(PageStep.LOGIN)
+  }
   return (
     <div className={styles.container}>
       <div>
@@ -16,7 +23,7 @@ const RegistrationPage = () => {
           Зарегистрировать
         </Button>
         <div className={styles.text}>если у вас есть аккаунта</div>
-        <Button fullWidth>Вход</Button>
+        <Button fullWidth onClick={handleChangeStep}>Вход</Button>
       </div>
     </div>
   );

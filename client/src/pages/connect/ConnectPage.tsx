@@ -58,7 +58,7 @@ const ConnectPage = () => {
         </Button>
       </>
     );
-  }, [handleLock, isNumLock, onChangeNumber]);
+  }, [connectToPeerByDigits, handleLock, isNumLock, number, onChangeNumber]);
 
   return (
     <div className={styles.container}>

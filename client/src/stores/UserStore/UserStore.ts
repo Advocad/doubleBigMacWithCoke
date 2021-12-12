@@ -24,7 +24,7 @@ export default class UserStore {
   @observable user: User | null = null;
   @observable error: string | null = null;
   @observable isUserLoginning = true;
-  @observable hasVisited = false;
+  @observable hasVisited: boolean = Boolean(localStorage.getItem('hasVisited'));
 
   @computed
   get isUserLogged() {
@@ -41,7 +41,7 @@ export default class UserStore {
     this.isUserLoginning = true;
 
     const id = localStorage.getItem('userId');
-    const hasVisited = localStorage.getItem('hasVisited');
+    //const hasVisited = Boolean(localStorage.getItem('hasVisited'));
 
     if (id) {
       const res = await this.getUser({ id });
@@ -49,11 +49,11 @@ export default class UserStore {
       this.setUser(res.data);
     }
 
-    if (hasVisited) {
+    if (!this.hasVisited) {
       this.hasVisited = true;
     }
 
-    localStorage.setItem('hasVisited', '1');
+    localStorage.setItem('hasVisited', 'false');
     this.isUserLoginning = false;
   }
 

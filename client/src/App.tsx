@@ -1,16 +1,16 @@
 import { observer } from 'mobx-react-lite';
-import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router';
-import { CallPage, ConnectPage, Login } from './pages';
-import { MainPage } from './pages/main/MainPage';
+import { useEffect } from 'react';
+import PageConstructor from './components/PageConstructor';
+import { PageStep } from './components/PageConstructor/types';
 import { useStore } from './stores/rootStoreProvider';
 
 function App() {
   const { isUserLogged, hasVisited, user, isUserLoginning, checkLocalStoreAndLogIfNeeded } =
     useStore('userStore');
 
-  const { initJanusConnection, isConnectedToPeer, isConnectingToPeer, isJanusConnected } =
-    useStore('callStore');
+  const { step, changeStep } = useStore('routeStore');
+
+  const { initJanusConnection, isConnectedToPeer, isConnectingToPeer, isJanusConnected } = useStore('callStore');
 
   useEffect(() => {
     if (user && !isJanusConnected) {
@@ -20,27 +20,31 @@ function App() {
 
   useEffect(() => {
     checkLocalStoreAndLogIfNeeded();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (isConnectedToPeer || isConnectingToPeer) {
-    return <CallPage />;
-  }
+  useEffect(() => {
+    if (!isUserLogged) {
+      changeStep(PageStep.LOGIN);
+    } else {
+      changeStep(PageStep.CONNECT);
+    }
+
+    if (!hasVisited) {
+      changeStep(PageStep.BASE);
+    }
+
+    if (isConnectedToPeer || isConnectingToPeer) {
+      changeStep(PageStep.CALL);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (isUserLoginning) {
     return <div>Loginning...</div>;
   }
 
-  if (!hasVisited) {
-    return <MainPage />;
-  }
-
-  if (!isUserLogged) {
-    return <Login />;
-  }
-
-  return <ConnectPage />;
-
-  return <Routes>{/* <Route path="/" element={<CallPage />}></Route> */}</Routes>;
+  return <PageConstructor step={step}/>;
 }
 
 export default observer(App);
