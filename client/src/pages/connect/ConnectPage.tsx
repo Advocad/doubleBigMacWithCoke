@@ -54,7 +54,7 @@ const ConnectPage = () => {
 
     return (
       <>
-        <Button onClick={handleLock} className={styles.btnNumber}>
+        <Button onClick={handleLock} className={styles.btnNumber} caption="Набрать цифры">
           <Icon name="nuumber" />
         </Button>
       </>

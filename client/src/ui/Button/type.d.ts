@@ -5,6 +5,7 @@ export type ButtonProps = {
   disabled?: boolean;
   className?: string;
   classNameText?: string;
+  classNameCaption?: string;
   ref?: Ref;
   id?: string;
   onMouseDown?: (e: React.MouseEvent<HTMLElement>) => void;
@@ -14,4 +15,5 @@ export type ButtonProps = {
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   fullWidth?: boolean;
   value?: string;
+  caption?: string;
 };
