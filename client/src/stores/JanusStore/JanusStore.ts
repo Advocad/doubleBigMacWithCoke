@@ -92,6 +92,9 @@ export default class JanusStore {
     const errorCode = result.plugindata.data;
     console.log('ErrorCode', errorCode);
     if (result.plugindata.data.error_code && result.plugindata.data.error_code === 476) {
+      this.rootStore.stores.snackbarStore.pushMessage({
+        text: 'Cannot log in. Seems user already have a session',
+      });
       throw new Error('Cannot register user, may be have another logged in');
     }
   }
