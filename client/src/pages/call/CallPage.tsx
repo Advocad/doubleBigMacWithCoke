@@ -6,8 +6,16 @@ import { Button, Icon } from '../../ui';
 import styles from './Call.module.scss';
 
 const CallPage = () => {
-  const { isConnectingToPeer, peerInfo, peerIsTalking, hangup, turnMicOn, turnMicOff } =
-    useStore('callStore');
+  const {
+    isConnectingToPeer,
+    peerInfo,
+    peerIsTalking,
+    toggleHold,
+    isOnHold,
+    hangup,
+    turnMicOn,
+    turnMicOff,
+  } = useStore('callStore');
 
   const [isMicActive, setMicActive] = useState(false);
 
@@ -34,12 +42,12 @@ const CallPage = () => {
           <Icon name="close" />
         </Button>
         <Microfone
-          isActiveMicrofone={isMicActive}
+          isActiveMicrofone={isMicActive || isOnHold}
           handlePressOn={handleOn}
           handlePressOff={handleOff}
         />
-        <Button className={styles.btnLock}>
-          <Icon name="lock"/>
+        <Button onClick={toggleHold} className={styles.btnLock}>
+          <Icon name="lock" />
         </Button>
       </div>
     </div>

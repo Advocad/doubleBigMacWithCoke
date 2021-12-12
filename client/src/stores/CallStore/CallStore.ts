@@ -53,9 +53,6 @@ export default class CallStore {
     });
   }
 
-  @observable
-  public peerIsTalking = false;
-
   private socket: Socket;
   private janusStore: JanusStore = new JanusStore(this.rootStore);
   private peerConnection: RTCPeerConnection = getNewPeerConnection();
@@ -70,6 +67,9 @@ export default class CallStore {
   };
 
   @observable error = '';
+
+  @observable
+  public peerIsTalking = false;
 
   @observable
   public peerInfo: { digits: string; nickname: string; id: string } | null = null;
@@ -89,10 +89,11 @@ export default class CallStore {
   @observable
   public incomingCall: { peername: string; type: 'offer'; sdp: string } | null = null;
 
+  @observable
+  isOnHold = false;
+
   @action.bound
   private handleRemoteOnVoice(e: { id: string; mic: boolean }) {
-    console.log('Onvoice', e);
-
     if (e.id === this.peerInfo?.id) {
       if (e.mic === true) {
         this.turnMicOff();
@@ -103,7 +104,21 @@ export default class CallStore {
         });
       } else {
         this.peerIsTalking = false;
+        if (this.isOnHold) {
+          this.turnMicOn();
+        }
       }
+    }
+  }
+
+  @action.bound
+  toggleHold() {
+    this.isOnHold = !this.isOnHold;
+    if (this.isOnHold && !this.peerIsTalking) {
+      this.turnMicOn();
+    }
+    if (!this.isOnHold) {
+      this.turnMicOff();
     }
   }
 
