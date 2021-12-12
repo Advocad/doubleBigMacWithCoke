@@ -26,7 +26,7 @@ export default class UserStore {
   @observable isUserLoginning = true;
   @observable hasVisited = false;
   @observable recentCalls: { digits: string; nickname: string }[] = [];
-  @observable isRegistration = false
+  @observable isRegistration = false;
 
   @computed
   get isUserLogged() {
