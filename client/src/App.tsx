@@ -39,8 +39,6 @@ function App() {
   }
 
   return <ConnectPage />;
-
-  return <Routes>{/* <Route path="/" element={<CallPage />}></Route> */}</Routes>;
 }
 
 export default observer(App);

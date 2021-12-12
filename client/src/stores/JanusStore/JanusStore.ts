@@ -163,6 +163,15 @@ export default class JanusStore {
       };
     }
 
+    if (result?.event === 'hangup') {
+      return {
+        event: 'hangup',
+        data: {
+          reason: result.reason,
+        },
+      };
+    }
+
     if (result?.event === 'incomingcall' || data.janus === 'hangup') {
       return {
         event: 'hangup',
