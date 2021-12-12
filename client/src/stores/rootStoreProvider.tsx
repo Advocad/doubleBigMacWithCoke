@@ -1,20 +1,14 @@
 import React, { useContext, createContext } from 'react';
-import BurgerStore from './burgerStore/BurgerStore';
-import TestStore from './testStore/testStore';
 import CallStore from './CallStore/CallStore';
 import UserStore from './UserStore/UserStore';
 
 type Stores = {
-  testStore: TestStore;
-  burgerStore: BurgerStore;
   callStore: CallStore;
   userStore: UserStore;
 };
 
 function initStores(rootStore: RootStore) {
   return {
-    testStore: new TestStore(rootStore),
-    burgerStore: new BurgerStore(rootStore),
     callStore: new CallStore(rootStore),
     userStore: new UserStore(rootStore),
   };

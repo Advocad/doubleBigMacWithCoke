@@ -3,8 +3,6 @@ import { ServerOptions } from 'socket.io';
 export function getConfig() {
   return {
     port: process.env.PORT || 3001,
-    appId: process.env.APP_ID,
-    appCertificate: process.env.APP_CERTIFICATE,
     mongoUrl: process.env.MONGODB_URI || 'localhost',
     // mongoPort: process.env.MONGODB_PORT || '27017',
     // mongoUser: process.env.MONGODB_USER || 'burger',
