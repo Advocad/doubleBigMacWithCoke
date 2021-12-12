@@ -17,6 +17,7 @@ const Listener: FC<ListenerProps> = ({ loading, isVoice }) => {
   useEffect(() => {
     const handler = (db: number) => {
       if (circleEl.current) {
+        console.log(circleEl.current.style)
         circleEl.current.style.transform = `scale(${db / 100}, ${db / 100})`;
       }
     };
@@ -29,8 +30,10 @@ const Listener: FC<ListenerProps> = ({ loading, isVoice }) => {
   }, [remoteDbMeter]);
 
   return (
-    <div ref={circleEl} className={clsx(styles.circle, { [styles.pulse]: isVoice })}>
-      {loading ? <Loading /> : <Icon name="hog" />}
+    <div ref={circleEl} className={clsx(styles.circleDb)}>
+      <div className={clsx(styles.circle, { [styles.pulse]: isVoice })}>
+        {loading ? <Loading /> : <Icon name="hog" />}
+      </div>
     </div>
   );
 };
