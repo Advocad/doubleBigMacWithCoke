@@ -1,0 +1,12 @@
+@import '../../variables.scss';
+
+.container {
+  background: $background;
+  color: $color;
+  height: 100vh;
+  padding: 0 65px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+

@@ -4,10 +4,14 @@ import { Button, TextField } from '../../ui';
 import styles from './Login.module.scss';
 
 const Login = () => {
-  const { loginUser } = useStore('userStore');
+  const { loginUser, toggleForm } = useStore('userStore');
 
   const [digits, setDigits] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleChangeStep = () => {
+    toggleForm(true)
+  }
 
   return (
     <div className={styles.container}>
@@ -22,7 +26,7 @@ const Login = () => {
           Войти
         </Button>
         <div className={styles.text}>если у вас нет аккаунта</div>
-        <Button fullWidth>Регистрация</Button>
+        <Button fullWidth onClick={handleChangeStep}>Регистрация</Button>
       </div>
     </div>
   );
