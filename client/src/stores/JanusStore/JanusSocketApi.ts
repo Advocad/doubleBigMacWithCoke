@@ -231,6 +231,8 @@ type RegisterUserResponse = {
     plugin: 'janus.plugin.videocall';
     data: {
       videocall: 'event';
+      error?: 'string';
+      error_code?: 476;
       result: {
         event: 'registered';
         username: string;

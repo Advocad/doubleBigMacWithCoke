@@ -202,6 +202,11 @@ export default class CallStore {
     if (e.event === 'hangup') {
       this.hangup();
     }
+    if (e.event === 'error') {
+      if (e.data.code === 476) {
+        throw new Error('Alreay registered');
+      }
+    }
   }
 
   @action.bound

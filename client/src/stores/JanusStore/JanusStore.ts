@@ -87,7 +87,13 @@ export default class JanusStore {
       throw new Error('Cant register; No session');
     }
 
-    return await this.janusSocketApi.registerUser(this.sessionId, this.handle_id, name);
+    const result = await this.janusSocketApi.registerUser(this.sessionId, this.handle_id, name);
+
+    const errorCode = result.plugindata.data;
+    console.log('ErrorCode', errorCode);
+    if (result.plugindata.data.error_code && result.plugindata.data.error_code === 476) {
+      throw new Error('Cannot register user, may be have another logged in');
+    }
   }
 
   @action.bound
@@ -125,6 +131,16 @@ export default class JanusStore {
 
   public transformEventData(data: any): JanusEvents | null {
     const result = data?.plugindata?.data?.result;
+
+    if (data?.plugindata?.data?.error_code && data?.plugindata?.data?.error_code === 476) {
+      return {
+        event: 'error',
+        data: {
+          code: 476,
+          message: data?.plugindata?.data?.error,
+        },
+      };
+    }
 
     if (result?.event === 'incomingcall') {
       return {
@@ -230,5 +246,12 @@ export type JanusEvents =
       event: 'hangup';
       data: {
         reason: string;
+      };
+    }
+  | {
+      event: 'error';
+      data: {
+        message: string;
+        code: number;
       };
     };
