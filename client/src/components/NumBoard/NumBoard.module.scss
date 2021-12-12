@@ -1,0 +1,11 @@
+@import '../../variables.scss';
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 95px);
+  grid-template-rows: repeat(3, 60px);
+}
+
+.btnNumText {
+  padding: 10px 0;
+}

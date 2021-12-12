@@ -1,0 +1,42 @@
+@import '../../variables.scss';
+
+.textField {
+  position: relative;
+  max-width: 315px;
+  margin: 15px 0;
+
+  & > input {
+    border: none;
+    color: $color-field;
+    padding: 5px 0;
+    width: 100%;
+    background: none;
+    font-size: 24px;
+    font-family: Manrope;
+    outline: none;
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      -webkit-text-fill-color: $color-field !important;
+      -webkit-background-clip: text;
+      font-size: 24px;
+    }
+    &:focus,
+    &:active,
+    &:focus-visible {
+      background: none;
+    }
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    border-bottom: 1px solid $border-fild;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+}

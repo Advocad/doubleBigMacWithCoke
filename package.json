@@ -1,0 +1,70 @@
+{
+  "name": "double-big-mac-with-coke",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:Advocad/doubleBigMacWithCoke.git",
+  "author": "tema <you@example.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@emotion/react": "^11.7.0",
+    "@emotion/styled": "^11.6.0",
+    "@mui/material": "^5.2.3",
+    "@types/express": "^4.17.13",
+    "@types/node": "^16.11.12",
+    "@types/react-router": "^5.1.17",
+    "@types/react-router-dom": "^5.3.2",
+    "@types/shortid": "^0.0.29",
+    "@types/socket.io": "^3.0.2",
+    "@types/socket.io-client": "^3.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/parser": "^5.6.0",
+    "axios": "^0.24.0",
+    "bcryptjs": "^2.4.3",
+    "cross-env": "^7.0.3",
+    "clsx": "^1.1.1",
+    "dotenv": "^10.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-react": "^7.27.1",
+    "express": "^4.17.1",
+    "husky": "^7.0.4",
+    "janus-gateway-js": "^2.0.2",
+    "janus-typescript-client": "https://github.com/marekhoryna/janus-typescript-client",
+    "jsonwebtoken": "^8.5.1",
+    "lint-staged": "^12.1.2",
+    "mobx": "^6.3.8",
+    "mobx-react": "^7.2.1",
+    "mongoose": "^6.1.1",
+    "prettier": "^2.5.1",
+    "react-loading": "^2.0.3",
+    "react-router-dom": "^6.0.2",
+    "shortid": "^2.2.16",
+    "socket.io": "^4.4.0",
+    "socket.io-client": "^4.4.0",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
+  },
+  "scripts": {
+    "client:install": "cd ./client && yarn",
+    "client:start": "cd ./client && yarn react-scripts start",
+    "client:build": "cd ./client && yarn react-scripts build",
+    "server:dev": "nodemon server/index.ts --ignore ./client",
+    "server:prod": "cross-env NODE_ENV=production ts-node server/index.ts",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged",
+    "lint": "eslint .",
+    "start": "cross-env NODE_ENV=production ts-node ./server/index.ts",
+    "heroku-postbuild": "cd client && yarn && yarn react-scripts build && cd ../"
+  },
+  "devDependencies": {
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "nodemon": "^2.0.15"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.{css,scss}": "prettier --write"
+  }
+}

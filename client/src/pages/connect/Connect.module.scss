@@ -1,0 +1,93 @@
+@import '../../variables.scss';
+
+.container {
+  background: $background;
+  color: $color;
+  height: 100vh;
+  padding: 0 65px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnSetting {
+  width: 75px;
+  height: 75px;
+  position: absolute;
+  right: 15px;
+}
+.btnSettingText {
+  padding: 15px 0;
+}
+
+.btnNumber {
+  width: 184px;
+}
+
+.user {
+  text-align: center;
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 36px;
+
+  color: #88cdff;
+  display: inline-block;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.userNumber {
+  display: block;
+  font-size: 24px;
+  color: $color-call-number;
+}
+
+.btnPhone {
+  border-color: $boder-btn-phone;
+  width: 184px;
+  margin-top: 20px;
+}
+
+.status {
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+
+  margin-left: 10px;
+  &.connecting {
+    background: orange;
+  }
+  &.online {
+    background: green;
+  }
+}
+
+.fieldNumber {
+  text-align: center;
+}
+
+.topBlock {
+  text-align: center;
+}
+
+.logout {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  font-weight: 300;
+  cursor: pointer;
+  color: #8c8c85;
+}

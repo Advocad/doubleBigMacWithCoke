@@ -1,0 +1,22 @@
+@import '../../variables.scss';
+
+.container {
+  background: $background;
+  color: $color;
+  height: 100vh;
+  padding: 0 65px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.description {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
+  margin-top: 79px;
+  text-align: center;
+}
