@@ -2,6 +2,7 @@ import { RootStore } from '../rootStoreProvider';
 import { observable, action, makeObservable } from 'mobx';
 import JanusStore, { JanusEvents } from '../JanusStore/JanusStore';
 import { io, Socket } from 'socket.io-client';
+import { Dbmeter } from '../../utils/dbmeter';
 
 const ICE_SERVERS = [{ urls: 'stun:stun.l.google.com:19302' }];
 
@@ -89,6 +90,12 @@ export default class CallStore {
   @observable
   public incomingCall: { peername: string; type: 'offer'; sdp: string } | null = null;
 
+  @observable
+  public localDbMeter: Dbmeter | null = null;
+
+  @observable
+  public remoteDbMeter: Dbmeter | null = null;
+
   @action.bound
   private handleRemoteOnVoice(e: { id: string; mic: boolean }) {
     console.log('Onvoice', e);
@@ -123,28 +130,13 @@ export default class CallStore {
       throw new Error('Stream remote is not defined');
     }
 
-    const ctx = new AudioContext();
-    const spe = ctx.createAnalyser();
-
-    spe.smoothingTimeConstant = 0.8;
-    spe.fftSize = 1024;
-    const mic = ctx.createMediaStreamSource(this.remoteStream);
-
     this.localStream?.getAudioTracks().forEach(track => {
       track.enabled = false;
     });
 
-    // const bufferLength = spe.frequencyBinCount;
-    // const dataArray = new Uint8Array(bufferLength);
+    this.remoteDbMeter = new Dbmeter(this.remoteStream);
 
-    mic.connect(ctx.destination);
-    // function draw() {
-    //   requestAnimationFrame(draw);
-
-    //   console.log(dataArray);
-    // }
-
-    // draw();
+    this.remoteDbMeter.spe.connect(this.remoteDbMeter.ctx.destination);
     this.isSoundActive = true;
   }
 
@@ -307,6 +299,11 @@ export default class CallStore {
     this.error = '';
     this.isConnectedToPeer = false;
     this.isConnectingToPeer = false;
+
+    this.localDbMeter?.setRun(false);
+    this.localDbMeter = null;
+    this.remoteDbMeter?.setRun(false);
+    this.remoteDbMeter = null;
 
     this.peerConnection = getNewPeerConnection();
     this.deactivateSound();
