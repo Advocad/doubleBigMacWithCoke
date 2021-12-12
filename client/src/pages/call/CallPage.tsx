@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Listener, Microfone } from '../../components';
 import { useStore } from '../../stores/rootStoreProvider';
 import { Button, Icon } from '../../ui';
@@ -11,6 +11,11 @@ const CallPage = () => {
 
   const [isMicActive, setMicActive] = useState(false);
 
+  useEffect(() => {
+    if (peerIsTalking) {
+      setMicActive(false);
+    }
+  }, [peerIsTalking]);
   return (
     <div className={styles.container}>
       <div>

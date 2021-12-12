@@ -92,9 +92,15 @@ export default class CallStore {
   @action.bound
   private handleRemoteOnVoice(e: { id: string; mic: boolean }) {
     console.log('Onvoice', e);
+
     if (e.id === this.peerInfo?.id) {
       if (e.mic === true) {
+        this.turnMicOff();
         this.peerIsTalking = true;
+
+        this.remoteStream.getTracks().forEach(track => {
+          track.enabled = true;
+        });
       } else {
         this.peerIsTalking = false;
       }
@@ -134,17 +140,7 @@ export default class CallStore {
       track.enabled = false;
     });
 
-    // const bufferLength = spe.frequencyBinCount;
-    // const dataArray = new Uint8Array(bufferLength);
-
     mic.connect(ctx.destination);
-    // function draw() {
-    //   requestAnimationFrame(draw);
-
-    //   console.log(dataArray);
-    // }
-
-    // draw();
     this.isSoundActive = true;
   }
 
@@ -288,9 +284,15 @@ export default class CallStore {
 
   @action.bound
   public turnMicOn() {
+    this.remoteStream.getTracks().forEach(track => {
+      track.enabled = false;
+    });
+
     this.localStream?.getTracks().forEach(track => {
       track.enabled = true;
     });
+
+    this.peerIsTalking = false;
 
     const id = this.rootStore.stores.userStore.user?.id;
 
@@ -299,10 +301,15 @@ export default class CallStore {
 
   @action.bound
   public turnMicOff() {
+    const id = this.rootStore.stores.userStore.user?.id;
+
+    this.remoteStream.getTracks().forEach(track => {
+      track.enabled = true;
+    });
+
     this.localStream?.getTracks().forEach(track => {
       track.enabled = false;
     });
-    const id = this.rootStore.stores.userStore.user?.id;
 
     this.socket.emit('onvoice', { id, mic: false });
   }
