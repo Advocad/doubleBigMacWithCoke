@@ -44,6 +44,7 @@ export default class UserStore {
     localStorage.removeItem('userId');
     localStorage.removeItem('hasVisited');
     this.rootStore.resetAppState();
+    window.location.reload()
   }
 
   @action.bound
