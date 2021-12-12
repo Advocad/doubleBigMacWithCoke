@@ -1,18 +1,18 @@
-import React, { useEffect } from 'react';
-import { useStore } from '../../stores/rootStoreProvider';
+
 import { observer } from 'mobx-react';
+import {Button} from '../../ui';
+
+import styles from './Main.module.scss';
+import Logo from './shared/Logo/Logo';
 
 function MainPage() {
-  const { value, sendValue, fetchData } = useStore('testStore');
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
   return (
-    <div>
-      Value From Server: {value}
-      <input onChange={e => sendValue(Number(e.target.value))} />
+    <div className={styles.container}>
+      <div>
+        <Logo />
+        <div className={styles.description}>Могу брякнуть человеку, он подскочит, обрисуй ему ситуевинку, порешаете по ходу</div>
+      </div>
+      <Button>Продолжить</Button>
     </div>
   );
 }
