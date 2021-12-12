@@ -6,6 +6,7 @@ import { ReactComponent as Hog } from './assets/hog.svg';
 import { ReactComponent as Microfone } from './assets/microfone.svg';
 import { ReactComponent as MicrofoneActive } from './assets/microfone-active.svg';
 import { ReactComponent as Close } from './assets/close.svg';
+import { ReactComponent as Lock } from './assets/lock.svg';
 
 export const icons = {
   logo: Logo,
@@ -16,6 +17,7 @@ export const icons = {
   microfone: Microfone,
   'microfone-active': MicrofoneActive,
   close: Close,
+  lock: Lock,
 };
 
 export default icons;

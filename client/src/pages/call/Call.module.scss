@@ -28,6 +28,7 @@
 .constrols {
   text-align: center;
   position: relative;
+  margin-left: 10px;
 }
 
 .btnClose {
@@ -38,6 +39,14 @@
   left: -40px;
   top: 30px;
   border: none;
+}
+
+.btnLock {
+  position: absolute;
+  fill: red;
+  right: -35px;
+  top: 16px;
+  border: 0;
 }
 
 .btnCloseText {
