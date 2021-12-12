@@ -3,6 +3,11 @@
 .btnMicrofone {
   width: 120px;
   height: 120px;
+  border: 2px solid #518bb4;
+}
+
+.btnMicrofone:disabled {
+  border: 2px solid hsl(210, 2%, 18%);
 }
 
 .active {
