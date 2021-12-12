@@ -8,9 +8,11 @@
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  background: linear-gradient(0deg, rgba(155, 203, 94, 0.9), rgba(155, 203, 94, 0.9)), rgba(203, 139, 94, 0.9);
+  background: linear-gradient(0deg, rgba(155, 203, 94, 0.9), rgba(155, 203, 94, 0.9)),
+    rgba(203, 139, 94, 0.9);
   cursor: pointer;
-  box-shadow: 0 0 0 linear-gradient(0deg, rgba(155, 203, 94, 0.9), rgba(155, 203, 94, 0.9)), rgba(203, 139, 94, 0.9);
+  box-shadow: 0 0 0 linear-gradient(0deg, rgba(155, 203, 94, 0.9), rgba(155, 203, 94, 0.9)),
+    rgba(203, 139, 94, 0.9);
   animation: pulse 2s infinite;
 
   position: absolute;

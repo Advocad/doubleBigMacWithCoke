@@ -1,10 +1,9 @@
-import { FC, useMemo } from "react";
-import { ListNumberProps } from "./type";
+import { FC, useMemo } from 'react';
+import { ListNumberProps } from './type';
 
-import styles from "./ListNumber.module.scss"
+import styles from './ListNumber.module.scss';
 
-const ListNumber: FC<ListNumberProps> = ({numbers}) => {
-
+const ListNumber: FC<ListNumberProps> = ({ numbers }) => {
   const renderList = useMemo(() => {
     return numbers.map(number => {
       return (
@@ -12,15 +11,11 @@ const ListNumber: FC<ListNumberProps> = ({numbers}) => {
           <div>{number.name}</div>
           <div>{number.code}</div>
         </div>
-      )
-    })
-  }, [numbers])
+      );
+    });
+  }, [numbers]);
 
-  return (
-    <div className={styles.block}>
-      {renderList}
-    </div>
-  )
+  return <div className={styles.block}>{renderList}</div>;
 };
 
 export default ListNumber;

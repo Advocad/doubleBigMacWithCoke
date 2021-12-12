@@ -1,5 +1,3 @@
-
-
 export type ButtonProps = {
   children?: React.ReactNode;
   disabled?: boolean;
@@ -8,4 +6,4 @@ export type ButtonProps = {
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   fullWidth?: boolean;
   value?: string;
-}
+};

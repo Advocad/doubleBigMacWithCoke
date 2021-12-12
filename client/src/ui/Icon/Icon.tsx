@@ -6,9 +6,7 @@ import { IconProps } from './types';
 import icons from './icons';
 import styles from './Icon.module.scss';
 
-
 const Icon: React.FC<IconProps> = ({ className, name = 'logo', fill, ...props }) => {
-
   const IconComponent = useMemo(() => {
     return icons[name];
   }, [name]);

@@ -1,13 +1,16 @@
 import React, { useContext, createContext } from 'react';
-import TestStore from './testStore/testStore';
+import CallStore from './CallStore/CallStore';
+import UserStore from './UserStore/UserStore';
 
 type Stores = {
-  testStore: TestStore;
+  callStore: CallStore;
+  userStore: UserStore;
 };
 
 function initStores(rootStore: RootStore) {
   return {
-    testStore: new TestStore(rootStore),
+    callStore: new CallStore(rootStore),
+    userStore: new UserStore(rootStore),
   };
 }
 

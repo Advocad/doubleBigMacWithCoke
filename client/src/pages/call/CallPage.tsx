@@ -14,12 +14,12 @@ const CallPage = () => {
       </div>
       <div className={styles.constrols}>
         <Button className={styles.btnClose} classNameText={styles.btnCloseText}>
-          <Icon name="close"/>
+          <Icon name="close" />
         </Button>
         <Microfone />
       </div>
     </div>
-  )
+  );
 };
 
 export default CallPage;

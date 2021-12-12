@@ -8,7 +8,7 @@ const IncomingCall = () => {
         <div>Артем</div>
       </div>
     </div>
-  )
+  );
 };
 
 export default IncomingCall;

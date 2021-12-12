@@ -6,13 +6,13 @@ import styles from './Connect.module.scss';
 const array = [
   {
     name: 'Арртем',
-    code: 1234
+    code: 1234,
   },
   {
     name: 'Арртем2',
-    code: 312
-  }
-]
+    code: 312,
+  },
+];
 
 const ConnectPage = () => {
   const [isNumLock, setIsNumLock] = useState(false);
@@ -20,22 +20,25 @@ const ConnectPage = () => {
 
   const handleLock = useCallback(() => {
     setIsNumLock(true);
-  }, [])
+  }, []);
 
-  const onChangeNumber = useCallback((value) => {
-    setNumber(number + value)
-  }, [number])
+  const onChangeNumber = useCallback(
+    value => {
+      setNumber(number + value);
+    },
+    [number]
+  );
 
   const renderBuutton = useMemo(() => {
-    if(isNumLock) {
+    if (isNumLock) {
       return (
         <>
-          <NumBoard OnChangeNumber={onChangeNumber}/>
+          <NumBoard OnChangeNumber={onChangeNumber} />
           <Button className={styles.btnPhone}>
             <Icon name="phone" />
           </Button>
         </>
-      )
+      );
     }
 
     return (
@@ -47,22 +50,20 @@ const ConnectPage = () => {
           <Icon name="setting" />
         </Button>
       </>
-    )
-  }, [handleLock, isNumLock, onChangeNumber])
+    );
+  }, [handleLock, isNumLock, onChangeNumber]);
 
   return (
     <div className={styles.container}>
       <div>
         <div className={styles.user}>Пользователь #12355</div>
         <TextField placeholder="Цифры" value={number} />
-        <ListNumber numbers={array}/>
+        <ListNumber numbers={array} />
       </div>
-      <div className={styles.bottom}>
-        {renderBuutton}
-      </div>
+      <div className={styles.bottom}>{renderBuutton}</div>
       <IncomingCall />
     </div>
-  )
-}
+  );
+};
 
 export default ConnectPage;

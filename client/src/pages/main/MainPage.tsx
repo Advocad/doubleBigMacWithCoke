@@ -1,6 +1,5 @@
-
 import { observer } from 'mobx-react';
-import {Button} from '../../ui';
+import { Button } from '../../ui';
 
 import styles from './Main.module.scss';
 import Logo from './shared/Logo/Logo';
@@ -10,7 +9,9 @@ function MainPage() {
     <div className={styles.container}>
       <div>
         <Logo />
-        <div className={styles.description}>Могу брякнуть человеку, он подскочит, обрисуй ему ситуевинку, порешаете по ходу</div>
+        <div className={styles.description}>
+          Могу брякнуть человеку, он подскочит, обрисуй ему ситуевинку, порешаете по ходу
+        </div>
       </div>
       <Button>Продолжить</Button>
     </div>

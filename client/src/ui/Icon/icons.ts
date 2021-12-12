@@ -8,14 +8,14 @@ import { ReactComponent as MicrofoneActive } from './assets/microfone-active.svg
 import { ReactComponent as Close } from './assets/close.svg';
 
 export const icons = {
-  'logo': Logo,
-  'nuumber': Number,
-  'setting': Setting,
-  'phone': Phone,
-  'hog': Hog,
-  'microfone': Microfone,
+  logo: Logo,
+  nuumber: Number,
+  setting: Setting,
+  phone: Phone,
+  hog: Hog,
+  microfone: Microfone,
   'microfone-active': MicrofoneActive,
-  'close': Close,
+  close: Close,
 };
 
 export default icons;

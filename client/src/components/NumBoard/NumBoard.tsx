@@ -1,15 +1,18 @@
-import { FC, useCallback } from "react";
-import { Button } from "../../ui";
-import { NumBoardProps } from "./types";
+import { FC, useCallback } from 'react';
+import { Button } from '../../ui';
+import { NumBoardProps } from './types';
 
 import styles from './NumBoard.module.scss';
 
-const NumBoard: FC<NumBoardProps> = ({OnChangeNumber}) => {
+const NumBoard: FC<NumBoardProps> = ({ OnChangeNumber }) => {
   const keypadKeys: string[] = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '-', '0', '.'];
 
-  const onButtonClick = useCallback((value) => () => {
-    OnChangeNumber(value);
-  }, [OnChangeNumber])
+  const onButtonClick = useCallback(
+    value => () => {
+      OnChangeNumber(value);
+    },
+    [OnChangeNumber]
+  );
 
   return (
     <div className={styles.container}>
@@ -25,7 +28,7 @@ const NumBoard: FC<NumBoardProps> = ({OnChangeNumber}) => {
         </Button>
       ))}
     </div>
-  )
-}
+  );
+};
 
 export default NumBoard;

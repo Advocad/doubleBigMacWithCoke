@@ -14,3 +14,13 @@ cd client
 yarn
 yarn start
 ```
+
+# Для деплоя 
+```
+heroku login
+git push heroku {branch-name}:master
+```
+
+Для проброса переменных окружения:
+heroku config:set VARIABLE=VALUE
+
