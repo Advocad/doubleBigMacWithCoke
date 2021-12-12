@@ -1,29 +1,45 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router';
-import { CallPage } from './pages';
+import { CallPage, ConnectPage, Login } from './pages';
+import { MainPage } from './pages/main/MainPage';
 import { useStore } from './stores/rootStoreProvider';
 
 function App() {
-  const { isUserLogged, isUserLoginning, checkLocalStoreAndLogIfNeeded } = useStore('userStore');
+  const { isUserLogged, hasVisited, user, isUserLoginning, checkLocalStoreAndLogIfNeeded } =
+    useStore('userStore');
+
+  const { initJanusConnection, isConnectedToPeer, isJanusConnected } = useStore('callStore');
+
+  useEffect(() => {
+    if (user && !isJanusConnected) {
+      initJanusConnection(String(user.id));
+    }
+  }, [user, initJanusConnection, isJanusConnected]);
 
   useEffect(() => {
     checkLocalStoreAndLogIfNeeded();
   }, []);
 
+  if (isConnectedToPeer) {
+    return <CallPage />;
+  }
+
   if (isUserLoginning) {
     return <div>Loginning...</div>;
   }
 
-  if (!isUserLogged) {
-    return <div>LOGIN PAGE</div>;
+  if (!hasVisited) {
+    return <MainPage />;
   }
 
-  return (
-    <Routes>
-      <Route path="/" element={<CallPage />}></Route>
-    </Routes>
-  );
+  if (!isUserLogged) {
+    return <Login />;
+  }
+
+  return <ConnectPage />;
+
+  return <Routes>{/* <Route path="/" element={<CallPage />}></Route> */}</Routes>;
 }
 
 export default observer(App);

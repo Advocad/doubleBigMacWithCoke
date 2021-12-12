@@ -1,11 +1,13 @@
 import styles from './IncomingCall.module.scss';
 
-const IncomingCall = () => {
+type Props = { digits: string; nickname: string; handleClick: () => void };
+
+const IncomingCall = ({ digits, nickname, handleClick }: Props) => {
   return (
-    <div className={styles.pulse}>
+    <div className={styles.pulse} onClick={handleClick}>
       <div className={styles.text}>
-        <div>#1488</div>
-        <div>Артем</div>
+        <div>#{digits}</div>
+        <div>${nickname}</div>
       </div>
     </div>
   );

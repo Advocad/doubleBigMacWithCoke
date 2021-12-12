@@ -1,16 +1,19 @@
 import React, { useContext, createContext } from 'react';
 import CallStore from './CallStore/CallStore';
 import UserStore from './UserStore/UserStore';
+import SnakbarStore from './SnakbarStore/SnackbarStore';
 
 type Stores = {
   callStore: CallStore;
   userStore: UserStore;
+  snackbarStore: SnakbarStore;
 };
 
 function initStores(rootStore: RootStore) {
   return {
     callStore: new CallStore(rootStore),
     userStore: new UserStore(rootStore),
+    snackbarStore: new SnakbarStore(),
   };
 }
 

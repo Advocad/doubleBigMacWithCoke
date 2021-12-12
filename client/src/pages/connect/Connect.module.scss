@@ -50,3 +50,15 @@
   width: 184px;
   margin-top: 20px;
 }
+
+.status {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  &.connecting {
+    background: orange;
+  }
+  &.online {
+    background: green;
+  }
+}

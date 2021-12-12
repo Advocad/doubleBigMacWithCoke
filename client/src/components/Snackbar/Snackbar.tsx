@@ -1,22 +1,14 @@
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import clsx from 'clsx';
 
 import styles from './Snackbar.module.scss';
-import { SnackbarProps } from './types';
+import { useStore } from '../../stores/rootStoreProvider';
+import { observer } from 'mobx-react';
 
-const Snackbar: FC<SnackbarProps> = ({ message }) => {
-  const [isActive, setIsActive] = useState<boolean>(true);
+const Snackbar: FC = () => {
+  const { message } = useStore('snackbarStore');
 
-  console.log(isActive);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsActive(false);
-    }, 2500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  return <div className={clsx(styles.snackbar, { [styles.show]: isActive })}>{message}</div>;
+  return <div className={clsx(styles.snackbar, { [styles.show]: !!message })}>{message?.text}</div>;
 };
 
-export default Snackbar;
+export default observer(Snackbar);

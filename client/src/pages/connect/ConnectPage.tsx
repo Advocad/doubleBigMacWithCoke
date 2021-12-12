@@ -1,7 +1,10 @@
+import { observer } from 'mobx-react';
 import { useCallback, useMemo, useState } from 'react';
 import { IncomingCall, ListNumber, NumBoard } from '../../components';
+import { useStore } from '../../stores/rootStoreProvider';
 import { Button, Icon, TextField } from '../../ui';
 import styles from './Connect.module.scss';
+import clsx from 'clsx';
 
 const array = [
   {
@@ -15,6 +18,10 @@ const array = [
 ];
 
 const ConnectPage = () => {
+  const { user } = useStore('userStore');
+  const { incomingCall, connectToPeerByDigits, handleIncomingCall, isJanusConnected } =
+    useStore('callStore');
+
   const [isNumLock, setIsNumLock] = useState(false);
   const [number, setNumber] = useState('');
 
@@ -34,7 +41,7 @@ const ConnectPage = () => {
       return (
         <>
           <NumBoard OnChangeNumber={onChangeNumber} />
-          <Button className={styles.btnPhone}>
+          <Button className={styles.btnPhone} onClick={() => connectToPeerByDigits(number)}>
             <Icon name="phone" />
           </Button>
         </>
@@ -56,14 +63,27 @@ const ConnectPage = () => {
   return (
     <div className={styles.container}>
       <div>
-        <div className={styles.user}>Пользователь #12355</div>
+        <div
+          className={clsx(styles.status, {
+            [styles.connecting]: !isJanusConnected,
+            [styles.online]: isJanusConnected,
+          })}
+        ></div>
+        <div className={styles.user}>{user?.nickname}</div>
+        <div className={styles.user}>{user?.digits}</div>
         <TextField placeholder="Цифры" value={number} />
         <ListNumber numbers={array} />
       </div>
       <div className={styles.bottom}>{renderBuutton}</div>
-      <IncomingCall />
+      {incomingCall && (
+        <IncomingCall
+          digits={incomingCall.peername}
+          nickname="Boba"
+          handleClick={handleIncomingCall}
+        />
+      )}
     </div>
   );
 };
 
-export default ConnectPage;
+export default observer(ConnectPage);
