@@ -19,7 +19,7 @@ const array = [
 
 const ConnectPage = () => {
   const { user } = useStore('userStore');
-  const { incomingCall, connectToPeerByDigits, handleIncomingCall, isJanusConnected } =
+  const { incomingCall, peerInfo, connectToPeerByDigits, handleIncomingCall, isJanusConnected } =
     useStore('callStore');
 
   const [isNumLock, setIsNumLock] = useState(false);
@@ -75,10 +75,10 @@ const ConnectPage = () => {
         <ListNumber numbers={array} />
       </div>
       <div className={styles.bottom}>{renderBuutton}</div>
-      {incomingCall && (
+      {incomingCall && peerInfo && (
         <IncomingCall
-          digits={incomingCall.peername}
-          nickname="Boba"
+          digits={peerInfo?.digits}
+          nickname={peerInfo?.nickname}
           handleClick={handleIncomingCall}
         />
       )}

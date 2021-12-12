@@ -7,6 +7,8 @@ import styles from './Button.module.scss';
 const Button: FC<ButtonProps> = ({
   children,
   disabled,
+  onMouseDown,
+  onMouseUp,
   onClick,
   className,
   classNameText,
@@ -19,6 +21,8 @@ const Button: FC<ButtonProps> = ({
       className={clsx(styles.btn, { [styles.fullWidth]: fullWidth }, className)}
       disabled={disabled}
       onClick={onClick}
+      onMouseUp={onMouseUp}
+      onMouseDown={onMouseDown}
       value={value}
       {...props}
     >

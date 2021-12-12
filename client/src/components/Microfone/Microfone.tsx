@@ -6,9 +6,13 @@ import { MicrofoneProps } from './types';
 
 import styles from './Microfone.module.scss';
 
-const Microfone: FC<MicrofoneProps> = ({ isActiveMicrofone }) => {
+const Microfone: FC<MicrofoneProps> = ({ isActiveMicrofone, handlePressOn, handlePressOff }) => {
   return (
-    <Button className={clsx(styles.btnMicrofone, { [styles.active]: isActiveMicrofone })}>
+    <Button
+      onMouseDown={handlePressOn}
+      onMouseUp={handlePressOff}
+      className={clsx(styles.btnMicrofone, { [styles.active]: isActiveMicrofone })}
+    >
       <Icon name={isActiveMicrofone ? 'microfone-active' : 'microfone'} />
     </Button>
   );

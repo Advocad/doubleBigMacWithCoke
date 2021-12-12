@@ -9,7 +9,8 @@ function App() {
   const { isUserLogged, hasVisited, user, isUserLoginning, checkLocalStoreAndLogIfNeeded } =
     useStore('userStore');
 
-  const { initJanusConnection, isConnectedToPeer, isJanusConnected } = useStore('callStore');
+  const { initJanusConnection, isConnectedToPeer, isConnectingToPeer, isJanusConnected } =
+    useStore('callStore');
 
   useEffect(() => {
     if (user && !isJanusConnected) {
@@ -21,7 +22,7 @@ function App() {
     checkLocalStoreAndLogIfNeeded();
   }, []);
 
-  if (isConnectedToPeer) {
+  if (isConnectedToPeer || isConnectingToPeer) {
     return <CallPage />;
   }
 

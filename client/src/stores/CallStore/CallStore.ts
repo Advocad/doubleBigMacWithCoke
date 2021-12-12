@@ -66,6 +66,9 @@ export default class CallStore {
   public isConnectedToPeer = false;
 
   @observable
+  public isConnectingToPeer = false;
+
+  @observable
   public isJanusConnected = false;
 
   @observable
@@ -80,6 +83,7 @@ export default class CallStore {
 
     if (accept) {
       await this.initAudioAndSendTracks();
+
       this.peerConnection.setRemoteDescription(new RTCSessionDescription(this.incomingCall));
       const answer = await this.peerConnection.createAnswer();
       this.peerConnection.setLocalDescription(answer);
@@ -101,6 +105,11 @@ export default class CallStore {
     spe.smoothingTimeConstant = 0.8;
     spe.fftSize = 1024;
     const mic = ctx.createMediaStreamSource(this.remoteStream);
+
+    this.localStream?.getAudioTracks().forEach(track => {
+      track.enabled = false;
+    });
+
     // const bufferLength = spe.frequencyBinCount;
     // const dataArray = new Uint8Array(bufferLength);
 
@@ -151,6 +160,7 @@ export default class CallStore {
   public async handleAnswer(data: { type: 'answer'; sdp: string }) {
     this.peerConnection.setRemoteDescription(data);
 
+    this.isConnectingToPeer = false;
     this.isConnectedToPeer = true;
   }
 
@@ -170,15 +180,19 @@ export default class CallStore {
 
     if (result.type === 'error') {
       this.error = result.error;
+      this.rootStore.stores.snackbarStore.pushMessage({ text: result.error });
 
       return;
     }
+
+    this.peerInfo = result.data;
 
     this.connectToPeer(result.data.id);
   }
 
   @action.bound
   public async connectToPeer(peerName: string) {
+    this.isConnectingToPeer = true;
     await this.initAudioAndSendTracks();
     const offer = await this.peerConnection.createOffer({
       offerToReceiveAudio: true,
@@ -192,9 +206,20 @@ export default class CallStore {
   }
 
   @action.bound
+  private async handleIncomingOffer(data: { peername: string; type: 'offer'; sdp: string }) {
+    this.incomingCall = data;
+
+    const peer = await this.rootStore.stores.userStore.getUser({
+      id: this.incomingCall.peername,
+    });
+
+    this.peerInfo = peer.data;
+  }
+
+  @action.bound
   public handleEvents(e: JanusEvents) {
     if (e.event === 'incoming_call') {
-      this.incomingCall = e.data;
+      this.handleIncomingOffer(e.data);
     }
     if (e.event === 'answer') {
       this.handleAnswer(e.data);
@@ -203,10 +228,34 @@ export default class CallStore {
       this.hangup();
     }
     if (e.event === 'error') {
+      let error = '';
       if (e.data.code === 476) {
-        throw new Error('Alreay registered');
+        error = 'Alreay registered';
       }
+      if (e.data.code === 478) {
+        error = 'User is offline';
+      }
+      if (e.data.code === 479) {
+        error = 'You cant call to yourself';
+      }
+
+      this.rootStore.stores.snackbarStore.pushMessage({ text: error });
+      this.error = error;
     }
+  }
+
+  @action.bound
+  public turnMicOn() {
+    this.localStream?.getTracks().forEach(track => {
+      track.enabled = true;
+    });
+  }
+
+  @action.bound
+  public turnMicOff() {
+    this.localStream?.getTracks().forEach(track => {
+      track.enabled = false;
+    });
   }
 
   @action.bound
@@ -219,7 +268,10 @@ export default class CallStore {
   @action.bound
   public resetState() {
     this.peerInfo = null;
+    this.incomingCall = null;
+    this.error = '';
     this.isConnectedToPeer = false;
+    this.isConnectingToPeer = false;
 
     this.peerConnection = getNewPeerConnection();
     this.deactivateSound();
