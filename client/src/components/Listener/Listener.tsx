@@ -17,8 +17,10 @@ const Listener: FC<ListenerProps> = ({ loading, isVoice }) => {
   useEffect(() => {
     const handler = (db: number) => {
       if (circleEl.current) {
-        console.log(circleEl.current.style)
-        circleEl.current.style.transform = `scale(${db / 100}, ${db / 100})`;
+        if(db){
+          circleEl.current.style.transform = `scale(${db / 100}, ${db / 100})`;
+        }
+        circleEl.current.style.transform = `scale(1)`;
       }
     };
 
