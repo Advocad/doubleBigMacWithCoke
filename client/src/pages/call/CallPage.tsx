@@ -33,6 +33,9 @@ const CallPage = () => {
           handlePressOn={handleOn}
           handlePressOff={handleOff}
         />
+        <Button className={styles.btnLock}>
+          <Icon name="lock"/>
+        </Button>
       </div>
     </div>
   );
