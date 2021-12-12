@@ -6,14 +6,15 @@ import { Button, Icon } from '../../ui';
 import styles from './Call.module.scss';
 
 const CallPage = () => {
-  const { isConnectingToPeer, peerInfo, hangup, turnMicOn, turnMicOff } = useStore('callStore');
+  const { isConnectingToPeer, peerInfo, peerIsTalking, hangup, turnMicOn, turnMicOff } =
+    useStore('callStore');
 
   const [isMicActive, setMicActive] = useState(false);
 
   return (
     <div className={styles.container}>
       <div>
-        <Listener loading={isConnectingToPeer} />
+        <Listener isVoice={peerIsTalking} loading={isConnectingToPeer} />
         <div className={styles.user}>
           {isConnectingToPeer && (
             <>

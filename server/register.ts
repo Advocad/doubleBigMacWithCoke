@@ -6,13 +6,14 @@ import { configureRoutes } from './routes';
 import { IController, Class } from './types';
 
 export function registerSocket(io: Server) {
-  // Пока тут заглушки
   io.on('connection', s => {
-    s.on('test', d => {
-      console.log(d);
+    s.on('onvoice', d => {
+      console.log('OnVoice', d);
+
+      s.broadcast.emit('onvoice', d);
     });
+
     console.log('Socket connectied');
-    s.send({ value: '123123' });
   });
 }
 

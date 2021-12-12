@@ -1,6 +1,7 @@
 import { RootStore } from '../rootStoreProvider';
 import { observable, action, makeObservable } from 'mobx';
 import JanusStore, { JanusEvents } from '../JanusStore/JanusStore';
+import { io, Socket } from 'socket.io-client';
 
 const ICE_SERVERS = [{ urls: 'stun:stun.l.google.com:19302' }];
 
@@ -44,8 +45,18 @@ export default class CallStore {
         this.activateSound();
       });
     };
+
+    this.socket = io('/');
+
+    this.socket.on('onvoice', e => {
+      this.handleRemoteOnVoice(e);
+    });
   }
 
+  @observable
+  public peerIsTalking = false;
+
+  private socket: Socket;
   private janusStore: JanusStore = new JanusStore(this.rootStore);
   private peerConnection: RTCPeerConnection = getNewPeerConnection();
   private localStream: MediaStream | null = null;
@@ -54,13 +65,14 @@ export default class CallStore {
   @observable states = {
     isConnectingToJanus: false,
     isAttachingPlugins: false,
+
     isUserRegistering: false,
   };
 
   @observable error = '';
 
   @observable
-  public peerInfo: { digits: string; nickname: string } | null = null;
+  public peerInfo: { digits: string; nickname: string; id: string } | null = null;
 
   @observable
   public isConnectedToPeer = false;
@@ -76,6 +88,18 @@ export default class CallStore {
 
   @observable
   public incomingCall: { peername: string; type: 'offer'; sdp: string } | null = null;
+
+  @action.bound
+  private handleRemoteOnVoice(e: { id: string; mic: boolean }) {
+    console.log('Onvoice', e);
+    if (e.id === this.peerInfo?.id) {
+      if (e.mic === true) {
+        this.peerIsTalking = true;
+      } else {
+        this.peerIsTalking = false;
+      }
+    }
+  }
 
   @action.bound
   public async handleIncomingCall(accept = true) {
@@ -213,7 +237,7 @@ export default class CallStore {
       id: this.incomingCall.peername,
     });
 
-    this.peerInfo = peer.data;
+    this.peerInfo = { ...peer.data, id: this.incomingCall.peername };
   }
 
   @action.bound
@@ -253,6 +277,10 @@ export default class CallStore {
     this.localStream?.getTracks().forEach(track => {
       track.enabled = true;
     });
+
+    const id = this.rootStore.stores.userStore.user?.id;
+
+    this.socket.emit('onvoice', { id, mic: true });
   }
 
   @action.bound
@@ -260,6 +288,9 @@ export default class CallStore {
     this.localStream?.getTracks().forEach(track => {
       track.enabled = false;
     });
+    const id = this.rootStore.stores.userStore.user?.id;
+
+    this.socket.emit('onvoice', { id, mic: false });
   }
 
   @action.bound
