@@ -26,6 +26,7 @@ export default class UserStore {
   @observable isUserLoginning = true;
   @observable hasVisited = false;
   @observable recentCalls: { digits: string; nickname: string }[] = [];
+  @observable isRegistration = false
 
   @computed
   get isUserLogged() {
@@ -115,5 +116,10 @@ export default class UserStore {
     } else {
       this.user = answer.data.data;
     }
+  }
+
+  @action.bound
+  public toggleForm(value: boolean) {
+    this.isRegistration = value;
   }
 }

@@ -1,12 +1,11 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router';
-import { CallPage, ConnectPage, Login } from './pages';
+import { CallPage, ConnectPage, LoadingPage, Login, RegistrationPage } from './pages';
 import { MainPage } from './pages/main/MainPage';
 import { useStore } from './stores/rootStoreProvider';
 
 function App() {
-  const { isUserLogged, hasVisited, user, isUserLoginning, checkLocalStoreAndLogIfNeeded } =
+  const { isUserLogged, hasVisited, user, isRegistration, isUserLoginning, checkLocalStoreAndLogIfNeeded } =
     useStore('userStore');
 
   const { initJanusConnection, isConnectedToPeer, isConnectingToPeer, isJanusConnected } =
@@ -22,16 +21,21 @@ function App() {
     checkLocalStoreAndLogIfNeeded();
   }, []);
 
+
   if (isConnectedToPeer || isConnectingToPeer) {
     return <CallPage />;
   }
 
   if (isUserLoginning) {
-    return <div>Loginning...</div>;
+    return <LoadingPage />;
   }
 
   if (!hasVisited) {
     return <MainPage />;
+  }
+
+  if(isRegistration) {
+    return <RegistrationPage />;
   }
 
   if (!isUserLogged) {
