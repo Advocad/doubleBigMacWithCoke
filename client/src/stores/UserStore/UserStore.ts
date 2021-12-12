@@ -39,6 +39,14 @@ export default class UserStore {
   }
 
   @action.bound
+  public logout() {
+    this.user = null;
+    localStorage.removeItem('userId');
+    localStorage.removeItem('hasVisited');
+    this.rootStore.resetAppState();
+  }
+
+  @action.bound
   public async checkLocalStoreAndLogIfNeeded() {
     this.isUserLoginning = true;
 

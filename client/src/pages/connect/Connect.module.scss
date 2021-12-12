@@ -41,9 +41,12 @@
   font-weight: normal;
   font-size: 36px;
 
-  color: $color-user;
+  color: #88cdff;
   display: inline-block;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .userNumber {
@@ -59,12 +62,11 @@
 }
 
 .status {
-  position: absolute;
   width: 15px;
   height: 15px;
-  top: 0;
-  right: -18px;
   border-radius: 100%;
+
+  margin-left: 10px;
   &.connecting {
     background: orange;
   }
@@ -79,4 +81,13 @@
 
 .topBlock {
   text-align: center;
+}
+
+.logout {
+  position: absolute;
+  right: 24px;
+  top: 24px;
+  font-weight: 300;
+  cursor: pointer;
+  color: #8c8c85;
 }
