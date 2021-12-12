@@ -1,0 +1,22 @@
+@import '../../variables.scss';
+
+.btnMicrofone {
+  width: 120px;
+  height: 120px;
+}
+
+.active {
+  border: 2px solid $border-microfone;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 19px rgba(155, 203, 94, 0.9);
+    box-shadow: 0 0 0 19px rgba(155, 203, 94, 0.9);
+  }
+  66% {
+    -moz-box-shadow: 0 0 0 40px rgba(109, 203, 94, 0.06);
+    box-shadow: 0 0 0 40px rgba(109, 203, 94, 0.06);
+  }
+}
