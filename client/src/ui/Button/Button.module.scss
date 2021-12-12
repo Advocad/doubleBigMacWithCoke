@@ -1,0 +1,24 @@
+@import '../../variables.scss';
+
+.buttonText {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 22px;
+  color: $color-btn;
+  padding-top: 14px;
+  padding-bottom: 15px;
+  letter-spacing: 0.02em;
+}
+
+.btn {
+  background: none;
+  border: 2px solid $border-btn;
+  box-sizing: border-box;
+  border-radius: 100px;
+  margin: 5px;
+}
+
+.btn.fullWidth {
+  width: 100%;
+}

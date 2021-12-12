@@ -1,0 +1,52 @@
+@import '../../variables.scss';
+
+.container {
+  background: $background;
+  color: $color;
+  height: 100vh;
+  padding: 0 65px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnSetting {
+  width: 75px;
+  height: 75px;
+  position: absolute;
+  right: 15px;
+}
+.btnSettingText {
+  padding: 15px 0;
+}
+
+.btnNumber {
+  width: 184px;
+}
+
+.user {
+  text-align: center;
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 49px;
+
+  color: $color-user;
+}
+
+.btnPhone {
+  border-color: $boder-btn-phone;
+  width: 184px;
+  margin-top: 20px;
+}

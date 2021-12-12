@@ -1,0 +1,36 @@
+//font
+@import url('https://fonts.googleapis.com/css2?family=Manrope&family=Oleo+Script:wght@400;700&display=swap');
+
+//default
+$background: linear-gradient(180deg, #252829 0%, #2b353e 100%);
+$color: #fff;
+
+//textField
+$color-field: #fff;
+$border-fild: #454545;
+
+//button
+$background-btn: none;
+$background-btn-color: #476072;
+$border-btn: #476072;
+$boder-btn-phone: rgba(84, 164, 94, 1);
+$color-btn: #fff;
+
+// text
+$color-text: #282c34;
+
+//loading
+$color-loading: rgba(176, 226, 226, 1);
+
+//listNumber
+$color-list: #f4f4f4;
+
+//user
+$color-user: #a09f9f;
+
+//call
+$background-circle: linear-gradient(0deg, rgba(203, 139, 94, 0.9), rgba(203, 139, 94, 0.9)),
+  rgba(203, 139, 94, 0.9);
+$color-call-number: #948f8f;
+$border-microfone: rgba(147, 231, 161, 1);
+$btnClose: #82413a;

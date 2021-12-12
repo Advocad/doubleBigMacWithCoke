@@ -1,9 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router';
-import { CallPage } from './pages/call/CallPage';
-// import { MainPage } from './pages';
-import { LoginPage } from './pages/loginPage/LoginPage';
+import { CallPage } from './pages';
 import { useStore } from './stores/rootStoreProvider';
 
 function App() {
@@ -18,15 +16,12 @@ function App() {
   }
 
   if (!isUserLogged) {
-    return <LoginPage />;
+    return <div>LOGIN PAGE</div>;
   }
 
   return (
     <Routes>
       <Route path="/" element={<CallPage />}></Route>
-      {/* <Route path="/" element={<CallPage />}></Route> */}
-      {/* <Route path="/" element={<AppPage />}></Route> */}
-      {/* <Route path="/login" element={<LoginPage />}></Route> */}
     </Routes>
   );
 }

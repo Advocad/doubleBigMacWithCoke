@@ -1,0 +1,44 @@
+@import '../../variables.scss';
+
+.pulse {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: linear-gradient(0deg, rgba(155, 203, 94, 0.9), rgba(155, 203, 94, 0.9)),
+    rgba(203, 139, 94, 0.9);
+  cursor: pointer;
+  box-shadow: 0 0 0 linear-gradient(0deg, rgba(155, 203, 94, 0.9), rgba(155, 203, 94, 0.9)),
+    rgba(203, 139, 94, 0.9);
+  animation: pulse 2s infinite;
+
+  position: absolute;
+  top: -100px;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 2;
+}
+
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 19px rgba(155, 203, 94, 0.9);
+    box-shadow: 0 0 0 19px rgba(155, 203, 94, 0.9);
+  }
+  66% {
+    -moz-box-shadow: 0 0 0 40px rgba(109, 203, 94, 0.06);
+    box-shadow: 0 0 0 40px rgba(109, 203, 94, 0.06);
+  }
+}
+
+.text {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 27px;
+  margin-bottom: 35px;
+}

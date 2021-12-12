@@ -1,0 +1,16 @@
+@import '../../variables.scss';
+
+.block {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 36px;
+
+  color: $color-list;
+}
+
+.number {
+  display: flex;
+  justify-content: space-between;
+}
