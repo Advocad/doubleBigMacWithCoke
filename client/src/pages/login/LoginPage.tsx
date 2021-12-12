@@ -19,6 +19,7 @@ const Login = () => {
         <form>
           <TextField placeholder="Код" value={digits} onChange={handleDigits} />
           <TextField placeholder="Пароль" type="password" value={password} onChange={setPassword} />
+          <div className={styles.recovery}>Забыли пароль ?</div>
         </form>
       </div>
       <div>

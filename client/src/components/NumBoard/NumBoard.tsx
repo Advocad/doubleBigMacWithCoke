@@ -5,7 +5,7 @@ import { NumBoardProps } from './types';
 import styles from './NumBoard.module.scss';
 
 const NumBoard: FC<NumBoardProps> = ({ OnChangeNumber, OnRemoveNumber }) => {
-  const keypadKeys: string[] = ['7', '8', '9', '4', '5', '6', '1', '2', '3', '<-', '0', ''];
+  const keypadKeys: string[] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '<-', '0', ''];
 
   const onButtonClick = useCallback(
     value => () => {

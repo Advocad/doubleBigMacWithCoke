@@ -1,7 +1,8 @@
 @import '../../variables.scss';
 
 .container {
-  background: $background;
+  background: linear-gradient(
+    180deg, #12242a 0%, #2b353e 100%);
   color: $color;
   height: 100vh;
   padding: 0 65px;
