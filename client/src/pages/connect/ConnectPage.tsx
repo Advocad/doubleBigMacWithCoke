@@ -77,7 +77,12 @@ const ConnectPage = () => {
           />
         </div>
         <div className={clsx(styles.user, styles.userNumber)}>#{user?.digits}</div>
-        <TextField placeholder="Цифры" value={number} className={styles.fieldNumber} />
+        <TextField
+          placeholder="Цифры"
+          onFocus={() => setIsNumLock(true)}
+          value={number}
+          className={styles.fieldNumber}
+        />
         {recentCalls.length > 0 && (
           <ListNumber numbers={recentCalls} onAddNumber={handleAddNumber} />
         )}
