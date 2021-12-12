@@ -26,7 +26,7 @@ export default class UserStore {
   @observable isUserLoginning = true;
   @observable hasVisited = false;
   @observable recentCalls: { digits: string; nickname: string }[] = [];
-  @observable isRegistration = false
+  @observable isRegistration = false;
 
   @computed
   get isUserLogged() {
@@ -36,6 +36,14 @@ export default class UserStore {
   @action.bound
   public setUser(user: User) {
     this.user = user;
+  }
+
+  @action.bound
+  public logout() {
+    this.user = null;
+    localStorage.removeItem('userId');
+    localStorage.removeItem('hasVisited');
+    this.rootStore.resetAppState();
   }
 
   @action.bound

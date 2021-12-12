@@ -54,9 +54,6 @@ export default class CallStore {
     });
   }
 
-  @observable
-  public peerIsTalking = false;
-
   private socket: Socket;
   private janusStore: JanusStore = new JanusStore(this.rootStore);
   private peerConnection: RTCPeerConnection = getNewPeerConnection();
@@ -71,6 +68,9 @@ export default class CallStore {
   };
 
   @observable error = '';
+
+  @observable
+  public peerIsTalking = false;
 
   @observable
   public peerInfo: { digits: string; nickname: string; id: string } | null = null;
@@ -95,16 +95,35 @@ export default class CallStore {
 
   @observable
   public remoteDbMeter: Dbmeter | null = null;
+  isOnHold = false;
 
   @action.bound
   private handleRemoteOnVoice(e: { id: string; mic: boolean }) {
-    console.log('Onvoice', e);
     if (e.id === this.peerInfo?.id) {
       if (e.mic === true) {
+        this.turnMicOff();
         this.peerIsTalking = true;
+
+        this.remoteStream.getTracks().forEach(track => {
+          track.enabled = true;
+        });
       } else {
         this.peerIsTalking = false;
+        if (this.isOnHold) {
+          this.turnMicOn();
+        }
       }
+    }
+  }
+
+  @action.bound
+  toggleHold() {
+    this.isOnHold = !this.isOnHold;
+    if (this.isOnHold && !this.peerIsTalking) {
+      this.turnMicOn();
+    }
+    if (!this.isOnHold) {
+      this.turnMicOff();
     }
   }
 
@@ -280,9 +299,15 @@ export default class CallStore {
 
   @action.bound
   public turnMicOn() {
+    this.remoteStream.getTracks().forEach(track => {
+      track.enabled = false;
+    });
+
     this.localStream?.getTracks().forEach(track => {
       track.enabled = true;
     });
+
+    this.peerIsTalking = false;
 
     const id = this.rootStore.stores.userStore.user?.id;
 
@@ -291,10 +316,15 @@ export default class CallStore {
 
   @action.bound
   public turnMicOff() {
+    const id = this.rootStore.stores.userStore.user?.id;
+
+    this.remoteStream.getTracks().forEach(track => {
+      track.enabled = true;
+    });
+
     this.localStream?.getTracks().forEach(track => {
       track.enabled = false;
     });
-    const id = this.rootStore.stores.userStore.user?.id;
 
     this.socket.emit('onvoice', { id, mic: false });
   }
