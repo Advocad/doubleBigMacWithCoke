@@ -52,6 +52,7 @@ const Microfone: FC<MicrofoneProps> = ({
       onTouchStart={handlePressOff}
       onTouchEnd={handlePressOff}
       className={clsx(styles.btnMicrofone, { [styles.active]: isActiveMicrofone })}
+      caption="Говорить"
     >
       <div className={styles.buttonText}>
         <Icon name={isActiveMicrofone ? 'microfone-active' : 'microfone'} />

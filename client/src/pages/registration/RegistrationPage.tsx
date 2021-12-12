@@ -41,7 +41,6 @@ const RegistrationPage = () => {
         <Button fullWidth className={styles.btnColor} onClick={handleSignup}>
           Зарегистрировать
         </Button>
-        <div className={styles.text}>если у вас есть аккаунта</div>
         <Button fullWidth onClick={handleChangeStep}>Вход</Button>
       </div>
     </div>

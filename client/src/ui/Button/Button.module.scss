@@ -17,8 +17,20 @@
   box-sizing: border-box;
   border-radius: 100px;
   margin: 5px;
+  cursor: pointer;
 }
 
 .btn.fullWidth {
   width: 100%;
+}
+
+.caption {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 19px;
+  margin-top: 10px;
+
+  color: $color-caption;
 }

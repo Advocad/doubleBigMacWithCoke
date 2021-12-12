@@ -15,25 +15,31 @@ const Button: FC<ButtonProps> = ({
   onClick,
   className,
   classNameText,
+  classNameCaption,
   value,
   fullWidth,
+  caption,
   ...props
 }) => {
   return (
-    <button
-      id={id}
-      className={clsx(styles.btn, { [styles.fullWidth]: fullWidth }, className)}
-      disabled={disabled}
-      onClick={onClick}
-      onMouseUp={onMouseUp}
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-      onMouseDown={onMouseDown}
-      value={value}
-      {...props}
-    >
-      <div className={clsx(styles.buttonText, classNameText)}>{children}</div>
-    </button>
+    <>
+      <button
+        id={id}
+        className={clsx(styles.btn, { [styles.fullWidth]: fullWidth }, className)}
+        disabled={disabled}
+        onClick={onClick}
+        onMouseUp={onMouseUp}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        onMouseDown={onMouseDown}
+        value={value}
+        {...props}
+      >
+        <div className={clsx(styles.buttonText, classNameText)}>{children}</div>
+      </button>
+
+      {caption && <div className={clsx(styles.caption, classNameCaption)}>{caption}</div>}
+    </>
   );
 };
 
