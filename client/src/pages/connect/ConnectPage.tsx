@@ -7,7 +7,7 @@ import styles from './Connect.module.scss';
 import clsx from 'clsx';
 
 const ConnectPage = () => {
-  const { user, recentCalls } = useStore('userStore');
+  const { user, recentCalls, logout } = useStore('userStore');
   const { incomingCall, peerInfo, connectToPeerByDigits, handleIncomingCall, isJanusConnected } =
     useStore('callStore');
 
@@ -66,9 +66,12 @@ const ConnectPage = () => {
 
   return (
     <div className={styles.container}>
+      <div className={styles.logout} onClick={logout}>
+        Logout
+      </div>
       <div className={styles.topBlock}>
         <div className={styles.user}>
-          {user?.nickname}
+          <span>{user?.nickname}</span>
           <div
             className={clsx(styles.status, {
               [styles.connecting]: !isJanusConnected,
@@ -79,7 +82,13 @@ const ConnectPage = () => {
         <div className={clsx(styles.user, styles.userNumber)}>#{user?.digits}</div>
         <TextField placeholder="Цифры" value={number} className={styles.fieldNumber} />
         {recentCalls.length > 0 && (
-          <ListNumber numbers={recentCalls} onAddNumber={handleAddNumber} />
+          <ListNumber
+            numbers={recentCalls}
+            onAddNumber={code => {
+              handleAddNumber(code);
+              setIsNumLock(true);
+            }}
+          />
         )}
       </div>
       <div className={styles.bottom}>{renderBuutton}</div>
