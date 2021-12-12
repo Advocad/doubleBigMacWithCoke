@@ -225,7 +225,6 @@ export default class CallStore {
       this.handleAnswer(e.data);
     }
     if (e.event === 'hangup') {
-      debugger;
       if (e.data.reason === 'User busy') {
         this.rootStore.stores.snackbarStore.pushMessage({ text: 'User is busy' });
       }
