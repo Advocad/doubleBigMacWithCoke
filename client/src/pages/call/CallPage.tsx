@@ -1,31 +1,50 @@
 import { observer } from 'mobx-react';
+import { useState } from 'react';
 import { Listener, Microfone } from '../../components';
 import { useStore } from '../../stores/rootStoreProvider';
 import { Button, Icon } from '../../ui';
 import styles from './Call.module.scss';
 
 const CallPage = () => {
-  const { user } = useStore('userStore');
-  const { incomingCall, connectToPeerByDigits, handleIncomingCall, isJanusConnected, hangup } =
-    useStore('callStore');
+  const { isConnectingToPeer, peerInfo, hangup, turnMicOn, turnMicOff } = useStore('callStore');
+
+  const [isMicActive, setMicActive] = useState(false);
 
   return (
     <div className={styles.container}>
       <div>
-        <Listener />
+        <Listener loading={isConnectingToPeer} />
         <div className={styles.user}>
-          <div>{'mock data'}</div>
-          <div className={styles.number}>#1448</div>
+          {isConnectingToPeer && (
+            <>
+              <div>{peerInfo?.nickname}</div>
+              <div className={styles.number}>#{peerInfo?.digits}</div>
+            </>
+          )}
         </div>
       </div>
       <div className={styles.constrols}>
         <Button className={styles.btnClose} onClick={hangup} classNameText={styles.btnCloseText}>
           <Icon name="close" />
         </Button>
-        <Microfone />
+        <Microfone
+          isActiveMicrofone={isMicActive}
+          handlePressOn={handleOn}
+          handlePressOff={handleOff}
+        />
       </div>
     </div>
   );
+
+  function handleOn() {
+    setMicActive(true);
+    turnMicOn();
+  }
+
+  function handleOff() {
+    setMicActive(false);
+    turnMicOff();
+  }
 };
 
 export default observer(CallPage);

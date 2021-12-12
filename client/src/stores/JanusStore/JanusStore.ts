@@ -132,11 +132,11 @@ export default class JanusStore {
   public transformEventData(data: any): JanusEvents | null {
     const result = data?.plugindata?.data?.result;
 
-    if (data?.plugindata?.data?.error_code && data?.plugindata?.data?.error_code === 476) {
+    if (data?.plugindata?.data?.error_code) {
       return {
         event: 'error',
         data: {
-          code: 476,
+          code: data?.plugindata?.data?.error_code,
           message: data?.plugindata?.data?.error,
         },
       };
