@@ -24,6 +24,7 @@ export default class UserStore {
   @observable user: User | null = null;
   @observable error: string | null = null;
   @observable isUserLoginning = true;
+  @observable hasVisited = false;
 
   @computed
   get isUserLogged() {
@@ -40,13 +41,26 @@ export default class UserStore {
     this.isUserLoginning = true;
 
     const id = localStorage.getItem('userId');
+    const hasVisited = localStorage.getItem('hasVisited');
+
     if (id) {
       const res = await this.getUser({ id });
       console.log(res);
       this.setUser(res.data);
     }
 
+    if (hasVisited) {
+      this.hasVisited = true;
+    }
+
+    localStorage.setItem('hasVisited', '1');
     this.isUserLoginning = false;
+  }
+
+  @action.bound
+  public setHasVisited() {
+    this.hasVisited = true;
+    localStorage.setItem('hasVisited', '1');
   }
 
   @action.bound
@@ -55,6 +69,8 @@ export default class UserStore {
 
     if (answer.data.type === 'error') {
       this.error = 'UserNotFound';
+
+      this.rootStore.stores.snackbarStore.pushMessage({ text: this.error });
     } else {
       this.user = answer.data.data;
 

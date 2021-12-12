@@ -60,7 +60,7 @@ export default class CallStore {
   @observable error = '';
 
   @observable
-  public peer: string | null = null;
+  public peerInfo: { digits: string; nickname: string } | null = null;
 
   @observable
   public isConnectedToPeer = false;
@@ -218,7 +218,7 @@ export default class CallStore {
 
   @action.bound
   public resetState() {
-    this.peer = null;
+    this.peerInfo = null;
     this.isConnectedToPeer = false;
 
     this.peerConnection = getNewPeerConnection();
