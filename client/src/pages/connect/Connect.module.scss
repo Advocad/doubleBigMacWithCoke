@@ -32,30 +32,31 @@
 
 .btnNumber {
   width: 184px;
-  background: #2a5a465e;
 }
 
 .user {
   text-align: center;
   font-family: Manrope;
   font-style: normal;
-  font-weight: normal;
   font-size: 36px;
 
   color: #88cdff;
-  display: inline-block;
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  display: inline-block;
+  .name {
+    font-weight: 500;
+  }
 }
 
 .userNumber {
   display: block;
   font-size: 24px;
   color: $color-call-number;
+  font-weight: 400;
+  color: #c5854c;
 }
 
 .btnPhone {
@@ -68,16 +69,14 @@
   width: 15px;
   height: 15px;
   border-radius: 100%;
-  position: absolute;
-  top: 5px;
-  right: -15px;
 
   margin-left: 10px;
   &.connecting {
-    background: orange;
+    background: rgb(200, 170, 68);
+    background: linear-gradient(180deg, rgba(200, 170, 68, 1) 0%, rgba(255, 206, 176, 1) 100%);
   }
   &.online {
-    background: green;
+    background: linear-gradient(180deg, rgb(91, 200, 68) 0%, rgb(92, 167, 135) 100%);
   }
 }
 

@@ -4,7 +4,10 @@ import JanusStore, { JanusEvents } from '../JanusStore/JanusStore';
 import { io, Socket } from 'socket.io-client';
 import { Dbmeter } from '../../utils/dbmeter';
 
-const ICE_SERVERS = [{ urls: 'stun:stun.l.google.com:19302' }];
+const ICE_SERVERS = [
+  { urls: 'stun:videos-webrtc.dev.avalab.io' },
+  { urls: 'stun:stun.l.google.com:19302' },
+];
 
 const peerConfiguration = {
   iceServers: ICE_SERVERS,
@@ -63,14 +66,10 @@ export default class CallStore {
   @observable states = {
     isConnectingToJanus: false,
     isAttachingPlugins: false,
-
     isUserRegistering: false,
   };
 
   @observable error = '';
-
-  @observable
-  public peerIsTalking = false;
 
   @observable
   public peerInfo: { digits: string; nickname: string; id: string } | null = null;
@@ -95,36 +94,86 @@ export default class CallStore {
 
   @observable
   public remoteDbMeter: Dbmeter | null = null;
+
+  @observable
   isOnHold = false;
+
+  @observable
+  soundState: 'idle' | 'sending' | 'recieving' = 'idle';
 
   @action.bound
   private handleRemoteOnVoice(e: { id: string; mic: boolean }) {
     if (e.id === this.peerInfo?.id) {
       if (e.mic === true) {
-        this.turnMicOff();
-        this.peerIsTalking = true;
-
-        this.remoteStream.getTracks().forEach(track => {
-          track.enabled = true;
-        });
+        this.handleChangeAudioState('recieving');
       } else {
-        this.peerIsTalking = false;
         if (this.isOnHold) {
-          this.turnMicOn();
+          this.handleChangeAudioState('sending');
+        } else {
+          this.handleChangeAudioState('idle');
         }
       }
     }
   }
 
   @action.bound
+  setOnHold() {
+    this.handleChangeAudioState('sending');
+    this.isOnHold = true;
+  }
+
+  @action.bound
+  resetHold() {
+    this.handleChangeAudioState('idle');
+    this.isOnHold = false;
+  }
+
+  @action.bound
+  handleChangeAudioState(newState: 'idle' | 'sending' | 'recieving') {
+    const id = this.rootStore.stores.userStore.user?.id;
+
+    if (newState === 'idle') {
+      if (this.soundState === 'sending') {
+        this.socket.emit('onvoice', { id, mic: false });
+      }
+
+      if (this.soundState === 'recieving') {
+        this.disableRecieveSound();
+      }
+    }
+
+    if (newState === 'sending') {
+      this.socket.emit('onvoice', { id, mic: true });
+
+      if (this.soundState === 'recieving') {
+        this.disableRecieveSound();
+      }
+    }
+
+    if (newState === 'recieving') {
+      this.enableRecieveSound();
+    }
+
+    this.soundState = newState;
+  }
+
+  @action.bound
+  disableRecieveSound() {
+    this.remoteStream.getTracks().forEach(track => {
+      track.enabled = false;
+    });
+  }
+
+  @action.bound
+  enableRecieveSound() {
+    this.remoteStream.getTracks().forEach(track => {
+      track.enabled = true;
+    });
+  }
+
+  @action.bound
   toggleHold() {
-    this.isOnHold = !this.isOnHold;
-    if (this.isOnHold && !this.peerIsTalking) {
-      this.turnMicOn();
-    }
-    if (!this.isOnHold) {
-      this.turnMicOff();
-    }
+    this.isOnHold = true;
   }
 
   @action.bound
@@ -133,7 +182,6 @@ export default class CallStore {
 
     if (accept) {
       await this.initAudioAndSendTracks();
-
       this.peerConnection.setRemoteDescription(new RTCSessionDescription(this.incomingCall));
       const answer = await this.peerConnection.createAnswer();
       this.peerConnection.setLocalDescription(answer);
@@ -149,9 +197,7 @@ export default class CallStore {
       throw new Error('Stream remote is not defined');
     }
 
-    this.localStream?.getAudioTracks().forEach(track => {
-      track.enabled = false;
-    });
+    this.disableRecieveSound();
 
     if (this.localStream) {
       this.localDbMeter = new Dbmeter(this.localStream);
@@ -164,13 +210,14 @@ export default class CallStore {
   }
 
   @action.bound deactivateSound() {
+    this.disableRecieveSound();
     this.remoteStream.getTracks().forEach(track => {
       track.stop();
     });
-
-    this.localStream?.getAudioTracks().forEach(track => {
-      track.enabled = false;
-    });
+    this.localStream &&
+      this.localStream.getTracks().forEach(track => {
+        track.stop();
+      });
   }
 
   @action.bound
@@ -242,6 +289,7 @@ export default class CallStore {
     await this.initAudioAndSendTracks();
     const offer = await this.peerConnection.createOffer({
       offerToReceiveAudio: true,
+      offerToReceiveVideo: false,
       iceRestart: true,
     });
 
@@ -302,38 +350,6 @@ export default class CallStore {
   }
 
   @action.bound
-  public turnMicOn() {
-    this.remoteStream.getTracks().forEach(track => {
-      track.enabled = false;
-    });
-
-    this.localStream?.getTracks().forEach(track => {
-      track.enabled = true;
-    });
-
-    this.peerIsTalking = false;
-
-    const id = this.rootStore.stores.userStore.user?.id;
-
-    this.socket.emit('onvoice', { id, mic: true });
-  }
-
-  @action.bound
-  public turnMicOff() {
-    const id = this.rootStore.stores.userStore.user?.id;
-
-    this.remoteStream.getTracks().forEach(track => {
-      track.enabled = true;
-    });
-
-    this.localStream?.getTracks().forEach(track => {
-      track.enabled = false;
-    });
-
-    this.socket.emit('onvoice', { id, mic: false });
-  }
-
-  @action.bound
   public hangup() {
     this.peerConnection.close();
 
@@ -347,6 +363,7 @@ export default class CallStore {
     this.error = '';
     this.isConnectedToPeer = false;
     this.isConnectingToPeer = false;
+    this.soundState = 'idle';
 
     this.localDbMeter?.setRun(false);
     this.localDbMeter = null;

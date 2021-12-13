@@ -14,9 +14,31 @@
 .btn {
   background: none;
   border: 2px solid $border-btn;
-  box-sizing: border-box;
   border-radius: 100px;
+  
   margin: 5px;
+  cursor: pointer;
+  transition: border .3s;
+
+  &:hover {
+
+  }
+
+  svg {
+    fill: $border-btn;
+    width: 32px;
+    height: 32px;
+  }
+
+  &:disabled {
+    color: gray;
+    border: 2px solid gray;
+    cursor: auto;
+
+    svg {
+      fill: #838383;
+    }
+  }
 }
 
 .btn.fullWidth {

@@ -20,7 +20,7 @@ const ConnectPage = () => {
 
   const onChangeNumber = useCallback(
     value => {
-      setNumber(number + value);
+      if (number.length + 1 <= 4) setNumber(number + value);
     },
     [number]
   );
@@ -37,7 +37,9 @@ const ConnectPage = () => {
   }, []);
 
   const handleConnection = useCallback(() => {
-    connectToPeerByDigits(number);
+    if (number.length === 4) connectToPeerByDigits(number);
+    else {
+    }
   }, [number, connectToPeerByDigits]);
 
   const renderBuutton = useMemo(() => {
@@ -45,7 +47,12 @@ const ConnectPage = () => {
       return (
         <>
           <NumBoard OnChangeNumber={onChangeNumber} OnRemoveNumber={handleRemoveNumber} />
-          <Button className={styles.btnPhone} onClick={handleConnection}>
+          <Button
+            // disabled={number.length !== 4}
+            disabled={number.length !== 4}
+            className={styles.btnPhone}
+            onClick={handleConnection}
+          >
             <Icon name="phone" />
           </Button>
         </>
@@ -55,21 +62,21 @@ const ConnectPage = () => {
     return (
       <>
         <Button onClick={handleLock} className={styles.btnNumber}>
-          <Icon name="nuumber" />
+          <Icon name="numericBoard" />
         </Button>
       </>
     );
-  }, [handleLock, handleRemoveNumber, handleConnection, isNumLock, onChangeNumber]);
+  }, [handleLock, handleRemoveNumber, handleConnection, number, isNumLock, onChangeNumber]);
 
   return (
     <div className={styles.container}>
       <div className={styles.logout} onClick={logout}>
         <span>Logout</span>
-        <Icon name="setting"  className={styles.iconSetting}/>
+        <Icon name="setting" className={styles.iconSetting} />
       </div>
       <div className={styles.topBlock}>
         <div className={styles.user}>
-          <span>{user?.nickname}</span>
+          <span className={styles.name}>{user?.nickname}</span>
           <div
             className={clsx(styles.status, {
               [styles.connecting]: !isJanusConnected,
@@ -79,9 +86,11 @@ const ConnectPage = () => {
         </div>
         <div className={clsx(styles.user, styles.userNumber)}>#{user?.digits}</div>
         <TextField
-          placeholder="Цифры"
+          placeholder="Набрать цифры"
           onFocus={() => setIsNumLock(true)}
+          onChange={e => setNumber(e)}
           value={number}
+          maxLength={4}
           className={styles.fieldNumber}
         />
         {recentCalls.length > 0 && (

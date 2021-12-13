@@ -17,7 +17,7 @@ const Login = () => {
     <div className={styles.container}>
       <div>
         <form>
-          <TextField placeholder="Код" value={digits} onChange={handleDigits} />
+          <TextField className={styles.input} placeholder="Код" value={digits} onChange={handleDigits} />
           <TextField placeholder="Пароль" type="password" value={password} onChange={setPassword} />
           <div className={styles.recovery}>Забыли пароль ?</div>
         </form>
@@ -26,7 +26,6 @@ const Login = () => {
         <Button fullWidth className={styles.btnColor} onClick={handleSignup}>
           Войти
         </Button>
-        <div className={styles.text}>если у вас нет аккаунта</div>
         <Button fullWidth onClick={handleChangeStep}>Регистрация</Button>
       </div>
     </div>

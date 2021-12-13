@@ -13,11 +13,18 @@
 .user {
   font-family: Manrope;
   font-style: normal;
-  font-weight: 600;
   font-size: 32px;
 
   text-align: center;
   margin-top: 75px;
+
+  .name {
+    font-weight: 900;
+  }
+
+  .digits {
+    font-weight: 100;
+  }
 }
 
 .number {

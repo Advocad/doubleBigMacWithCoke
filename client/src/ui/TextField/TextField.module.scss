@@ -15,6 +15,11 @@
     font-family: Manrope;
     outline: none;
 
+    &::placeholder {
+      font-weight: 200;
+      color: rgb(80, 79, 79);
+    }
+
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus,
@@ -33,10 +38,15 @@
   &:after {
     content: '';
     display: block;
-    border-bottom: 1px solid $border-fild;
+    border-bottom: 1px solid #5e96be;
     position: absolute;
     left: 0;
     bottom: 0;
     right: 0;
+    transition: 0.4s all;
+  }
+
+  &:hover::after {
+    border-bottom: 1px solid #6faedb;
   }
 }

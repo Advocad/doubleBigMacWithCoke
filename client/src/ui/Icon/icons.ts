@@ -7,6 +7,7 @@ import { ReactComponent as Microfone } from './assets/microfone.svg';
 import { ReactComponent as MicrofoneActive } from './assets/microfone-active.svg';
 import { ReactComponent as Close } from './assets/close.svg';
 import { ReactComponent as Lock } from './assets/lock.svg';
+import { ReactComponent as NumericBoard } from './assets/numericboard.svg';
 
 export const icons = {
   logo: Logo,
@@ -18,6 +19,7 @@ export const icons = {
   'microfone-active': MicrofoneActive,
   close: Close,
   lock: Lock,
+  numericBoard: NumericBoard
 };
 
 export default icons;
