@@ -28,7 +28,7 @@ const ListNumber: FC<ListNumberProps> = ({ numbers, onAddNumber }) => {
 
   return (
     <div className={styles.block}>
-      <div className={styles.text}>Недавние</div>
+      <div className={styles.text}>Недавние созвоны</div>
       {renderList}
     </div>
   );

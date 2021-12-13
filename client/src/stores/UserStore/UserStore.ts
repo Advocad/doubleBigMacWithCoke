@@ -44,7 +44,7 @@ export default class UserStore {
     localStorage.removeItem('userId');
     localStorage.removeItem('hasVisited');
     this.rootStore.resetAppState();
-    window.location.reload()
+    window.location.reload();
   }
 
   @action.bound
@@ -98,8 +98,13 @@ export default class UserStore {
   public async loginUser(credentials: { digits: string; password: string }) {
     const answer = await this.http.post('/login', credentials);
 
+    if (!(credentials.digits && credentials.password)) {
+      this.rootStore.stores.snackbarStore.pushMessage({ text: 'Поля не могут быть пустыми' });
+
+      return;
+    }
     if (answer.data.type === 'error') {
-      this.error = 'UserNotFound';
+      this.error = 'Пароль не подходит, а может и цифр таких нет';
 
       this.rootStore.stores.snackbarStore.pushMessage({ text: this.error });
     } else {

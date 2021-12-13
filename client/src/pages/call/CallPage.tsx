@@ -10,31 +10,30 @@ const CallPage = () => {
   const {
     isConnectingToPeer,
     peerInfo,
-    peerIsTalking,
-    toggleHold,
     isConnectedToPeer,
     isOnHold,
     hangup,
-    turnMicOn,
-    turnMicOff,
+    soundState,
+    setOnHold,
+    resetHold,
   } = useStore('callStore');
 
-  const [isMicActive, setMicActive] = useState(false);
+  const [lockActive, setLockActive] = useState(false);
 
   useEffect(() => {
-    if (peerIsTalking) {
-      setMicActive(false);
+    if (lockActive && !isOnHold) {
+      setLockActive(false);
     }
-  }, [peerIsTalking]);
+  }, [isOnHold, lockActive, setLockActive]);
   return (
     <div className={styles.container}>
       <div>
-        <Listener isVoice={peerIsTalking} loading={isConnectingToPeer} />
+        <Listener isVoice={soundState === 'recieving'} loading={isConnectingToPeer} />
         <div className={styles.user}>
           {isConnectingToPeer && (
             <>
-              <div>{peerInfo?.nickname}</div>
-              <div className={styles.number}>#{peerInfo?.digits}</div>
+              <div className={styles.name}>{peerInfo?.nickname}</div>
+              <div className={styles.digits}>#{peerInfo?.digits}</div>
             </>
           )}
         </div>
@@ -45,14 +44,14 @@ const CallPage = () => {
         </Button>
         <Microfone
           disabled={!isConnectedToPeer}
-          isActiveMicrofone={isMicActive || isOnHold}
+          isActiveMicrofone={soundState === 'sending'}
           handlePressOn={handleOn}
           handlePressOff={handleOff}
         />
         <Button
-          onClick={toggleHold}
+          onClick={handleLock}
           disabled={!isConnectedToPeer}
-          className={clsx(styles.btnLock, { [styles.active]: isOnHold })}
+          className={clsx(styles.btnLock, { [styles.active]: lockActive })}
         >
           <Icon name="lock" />
         </Button>
@@ -61,13 +60,22 @@ const CallPage = () => {
   );
 
   function handleOn() {
-    setMicActive(true);
-    turnMicOn();
+    setOnHold();
   }
 
   function handleOff() {
-    setMicActive(false);
-    turnMicOff();
+    resetHold();
+  }
+
+  function handleLock() {
+    if (lockActive) {
+      setLockActive(false);
+
+      resetHold();
+    } else {
+      setLockActive(true);
+      setOnHold();
+    }
   }
 };
 

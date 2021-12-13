@@ -10,9 +10,11 @@ const TextField: FC<TextFieldProps> = ({
   onChange,
   onFocus,
   value,
+  maxLength,
   ...props
 }) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (maxLength && e.target.value.length > maxLength) return;
     return onChange && onChange(e.target.value);
   };
 
