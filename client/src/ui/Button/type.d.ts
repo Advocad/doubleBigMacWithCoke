@@ -12,6 +12,7 @@ export type ButtonProps = {
   onMouseUp?: (e: React.MouseEvent<HTMLElement>) => void;
   onTouchStart?: (e: React.TouchEvent<HTMLElement>) => void;
   onTouchEnd?: (e: React.TouchEvent<HTMLElement>) => void;
+  onTouchEndOutside?: () => void;
   onClick?: (e: React.MouseEvent<HTMLElement>) => void;
   fullWidth?: boolean;
   value?: string;

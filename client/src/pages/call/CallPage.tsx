@@ -53,6 +53,7 @@ const CallPage = () => {
           isActiveMicrofone={soundState === 'sending'}
           handlePressOn={handleOn}
           handlePressOff={handleOff}
+          handleHold={handleLock}
         />
         <Button
           onClick={handleLock}

@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import React, { FC, Ref, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { Button, Icon } from '../../ui';
@@ -7,14 +7,23 @@ import { MicrofoneProps } from './types';
 import styles from './Microfone.module.scss';
 import { useStore } from '../../stores/rootStoreProvider';
 
+function dragHelper() {
+  return (
+    <div className={styles.dragHelper}>
+      <Icon className={styles.lock} name="lock" />
+    </div>
+  );
+}
+
 const Microfone: FC<MicrofoneProps> = ({
   disabled,
   isActiveMicrofone,
   handlePressOn,
   handlePressOff,
+  handleHold,
 }) => {
   const { localDbMeter } = useStore('callStore');
-
+  const [showDragHelper, setShowDragHelper] = useState(false);
   const id = 'mic-elem';
 
   useEffect(() => {
@@ -24,12 +33,7 @@ const Microfone: FC<MicrofoneProps> = ({
     const handler = (db: number) => {
       if (el && dbElem) {
         if (db) {
-          console.log('DB');
           dbElem.innerText = `${Math.round(db * 10) / 10} db`;
-
-          // const x = 1 + db / 80;
-          // const y = 1 + db / 80;
-          // el.style.transform = `scale(${x},  ${y})`;
         } else {
           el.style.transform = `scale(1)`;
         }
@@ -47,10 +51,11 @@ const Microfone: FC<MicrofoneProps> = ({
     <Button
       id={id}
       disabled={disabled}
-      onMouseDown={handlePressOn}
-      onMouseUp={handlePressOff}
-      onTouchStart={handlePressOn}
-      onTouchEnd={handlePressOff}
+      onMouseDown={onPressOn}
+      onMouseUp={onPressOff}
+      onTouchStart={onPressOn}
+      onTouchEnd={onPressOff}
+      onTouchEndOutside={onPressOutside}
       className={clsx(styles.btnMicrofone, { [styles.active]: isActiveMicrofone })}
       caption="Говорить"
     >
@@ -60,8 +65,24 @@ const Microfone: FC<MicrofoneProps> = ({
           0 db
         </label>
       </div>
+      <div className={clsx(styles.dragHelper, { [styles.show]: showDragHelper })}>
+        <Icon className={styles.lock} name="lock" />
+      </div>
     </Button>
   );
+
+  function onPressOn() {
+    handlePressOn();
+    setShowDragHelper(true);
+  }
+  function onPressOff() {
+    handlePressOff();
+    setShowDragHelper(false);
+  }
+  function onPressOutside() {
+    handleHold();
+    setShowDragHelper(false);
+  }
 };
 
 export default Microfone;

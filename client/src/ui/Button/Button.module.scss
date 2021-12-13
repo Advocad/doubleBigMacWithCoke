@@ -19,6 +19,7 @@
   margin: 5px;
   cursor: pointer;
   transition: border 0.3s;
+  position: relative;
 
   svg {
     fill: $border-btn;

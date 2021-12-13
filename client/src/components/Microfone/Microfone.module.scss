@@ -41,3 +41,27 @@
   align-items: center;
   margin-top: 20px;
 }
+
+.dragHelper {
+  position: absolute;
+  top: -144px;
+  pointer-events: none;
+  height: 132px;
+  background: gainsboro;
+  left: 36px;
+  background: rgb(99, 189, 176);
+  background: linear-gradient(180deg, rgba(99, 151, 189, 0.26) 0%, rgba(81, 93, 79, 0) 100%);
+
+  transition: all 0.8s;
+  transition-delay: 0.7s;
+  border-radius: 20px;
+  opacity: 0;
+
+  &.show {
+    opacity: 0.4;
+  }
+}
+
+.lock {
+  fill: #282f35;
+}
