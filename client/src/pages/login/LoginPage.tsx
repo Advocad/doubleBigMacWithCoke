@@ -10,14 +10,19 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const handleChangeStep = () => {
-    toggleForm(true)
-  }
+    toggleForm(true);
+  };
 
   return (
     <div className={styles.container}>
       <div>
         <form>
-          <TextField className={styles.input} placeholder="Код" value={digits} onChange={handleDigits} />
+          <TextField
+            className={styles.input}
+            placeholder="Код"
+            value={digits}
+            onChange={handleDigits}
+          />
           <TextField placeholder="Пароль" type="password" value={password} onChange={setPassword} />
           <div className={styles.recovery}>Забыли пароль ?</div>
         </form>
@@ -26,18 +31,14 @@ const Login = () => {
         <Button fullWidth className={styles.btnColor} onClick={handleSignup}>
           Войти
         </Button>
-        <Button fullWidth onClick={handleChangeStep}>Регистрация</Button>
+        <Button fullWidth onClick={handleChangeStep}>
+          Регистрация
+        </Button>
       </div>
     </div>
   );
 
   function handleDigits(digits: string) {
-    // if (!/^\d+$/.test(digits)) {
-    //   setDigits('');
-
-    //   return;
-    // }
-
     if (digits.length > 4) return;
 
     setDigits(digits);

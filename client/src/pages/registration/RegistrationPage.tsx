@@ -29,11 +29,8 @@ const RegistrationPage = () => {
       <div>
         <form>
           <TextField placeholder="Код" value={digits} onChange={handleDigits} />
-          <label className={styles.inputHint}>Уникальные цифры чтоб созвониться</label>
-          <TextField placeholder="Ник" type="name" value={name} onChange={setName} />
-          <label className={styles.inputHint}>Уникальные цифры чтоб созвониться</label>
+          <TextField placeholder="Имя" type="name" value={name} onChange={setName} />
           <TextField placeholder="Пароль" type="password" value={password} onChange={setPassword} />
-          <label className={styles.inputHint}>Уникальные цифры чтоб созвониться</label>
         </form>
       </div>
       <div>

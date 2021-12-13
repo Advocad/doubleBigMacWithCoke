@@ -40,5 +40,10 @@
   font-weight: 600;
   font-size: 20px;
   line-height: 27px;
-  margin-bottom: 35px;
+  margin-bottom: 30px;
+  text-align: center;
+
+  &:nth-child(2) {
+    font-size: 20px;
+  }
 }
