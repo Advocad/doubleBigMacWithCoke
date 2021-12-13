@@ -5,4 +5,5 @@ export type TextFieldProps = {
   onFocus?(): void;
   onChange?: (value: string) => void;
   value?: string;
+  maxLength?: number;
 };
