@@ -20,7 +20,7 @@ const ListNumber: FC<ListNumberProps> = ({ numbers, onAddNumber }) => {
           onClick={handlePasteField(number.digits)}
         >
           <div>{number.nickname}</div>
-          <div>{number.digits}</div>
+          <div className={styles.digits}>#{number.digits}</div>
         </div>
       );
     });

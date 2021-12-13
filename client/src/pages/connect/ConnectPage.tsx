@@ -48,7 +48,6 @@ const ConnectPage = () => {
         <>
           <NumBoard OnChangeNumber={onChangeNumber} OnRemoveNumber={handleRemoveNumber} />
           <Button
-            // disabled={number.length !== 4}
             disabled={number.length !== 4}
             className={styles.btnPhone}
             onClick={handleConnection}
@@ -61,7 +60,7 @@ const ConnectPage = () => {
 
     return (
       <>
-        <Button onClick={handleLock} className={styles.btnNumber}>
+        <Button onClick={handleLock} className={styles.btnNumber} caption="Набрать цифры">
           <Icon name="numericBoard" />
         </Button>
       </>
@@ -77,6 +76,7 @@ const ConnectPage = () => {
       <div className={styles.topBlock}>
         <div className={styles.user}>
           <span className={styles.name}>{user?.nickname}</span>
+          <div className={clsx(styles.user, styles.userNumber)}>#{user?.digits}</div>
           <div
             className={clsx(styles.status, {
               [styles.connecting]: !isJanusConnected,
@@ -84,7 +84,6 @@ const ConnectPage = () => {
             })}
           />
         </div>
-        <div className={clsx(styles.user, styles.userNumber)}>#{user?.digits}</div>
         <TextField
           placeholder="Набрать цифры"
           onFocus={() => setIsNumLock(true)}

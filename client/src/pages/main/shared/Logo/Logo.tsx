@@ -11,7 +11,7 @@ const Logo = () => {
         </span>
         <Icon name="logo" />
       </div>
-      <div className={styles.text}>Цифры Знаешь</div>
+      <div className={styles.text}>Цифры Знаешь - наберёшь</div>
     </div>
   );
 };
