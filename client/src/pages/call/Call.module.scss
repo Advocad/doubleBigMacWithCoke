@@ -46,9 +46,15 @@
   left: -40px;
   top: 30px;
   border: none;
+  transition: all 0.4s;
+
+  &:hover {
+    background: rgb(202, 86, 86);
+  }
 }
 
 .btnLock {
+  transition: all 0.4s;
   position: absolute;
   fill: red;
   right: -35px;
