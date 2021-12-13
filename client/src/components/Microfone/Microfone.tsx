@@ -27,6 +27,14 @@ const Microfone: FC<MicrofoneProps> = ({
   const id = 'mic-elem';
 
   useEffect(() => {
+    window.oncontextmenu = function (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    };
+  }, []);
+
+  useEffect(() => {
     const el = document.getElementById('mic-elem');
     const dbElem = document.getElementById('db');
 

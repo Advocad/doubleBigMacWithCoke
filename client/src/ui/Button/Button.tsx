@@ -18,6 +18,7 @@ function useOutsideAlerter(ref: any, onClickOutside?: () => void | undefined) {
         onClickOutside && onClickOutside();
         setHasClick(false);
       }
+      setHasClick(false);
     }
 
     function handleClickBegin() {
