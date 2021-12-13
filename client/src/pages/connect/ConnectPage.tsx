@@ -54,7 +54,7 @@ const ConnectPage = () => {
 
     return (
       <>
-        <Button onClick={handleLock} className={styles.btnNumber}>
+        <Button onClick={handleLock} className={styles.btnNumber} caption="Набрать цифры">
           <Icon name="nuumber" />
         </Button>
       </>
@@ -65,7 +65,7 @@ const ConnectPage = () => {
     <div className={styles.container}>
       <div className={styles.logout} onClick={logout}>
         <span>Logout</span>
-        <Icon name="setting"  className={styles.iconSetting}/>
+        <Icon name="setting" className={styles.iconSetting} />
       </div>
       <div className={styles.topBlock}>
         <div className={styles.user}>

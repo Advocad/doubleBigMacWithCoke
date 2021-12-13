@@ -10,8 +10,8 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const handleChangeStep = () => {
-    toggleForm(true)
-  }
+    toggleForm(true);
+  };
 
   return (
     <div className={styles.container}>
@@ -26,19 +26,14 @@ const Login = () => {
         <Button fullWidth className={styles.btnColor} onClick={handleSignup}>
           Войти
         </Button>
-        <div className={styles.text}>если у вас нет аккаунта</div>
-        <Button fullWidth onClick={handleChangeStep}>Регистрация</Button>
+        <Button fullWidth onClick={handleChangeStep}>
+          Регистрация
+        </Button>
       </div>
     </div>
   );
 
   function handleDigits(digits: string) {
-    // if (!/^\d+$/.test(digits)) {
-    //   setDigits('');
-
-    //   return;
-    // }
-
     if (digits.length > 4) return;
 
     setDigits(digits);

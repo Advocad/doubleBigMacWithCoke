@@ -30,7 +30,7 @@ const CallPage = () => {
       <div>
         <Listener isVoice={soundState === 'recieving'} loading={isConnectingToPeer} />
         <div className={styles.user}>
-          {isConnectingToPeer && (
+          {peerInfo && (
             <>
               <div className={styles.name}>{peerInfo?.nickname}</div>
               <div className={styles.digits}>#{peerInfo?.digits}</div>
@@ -39,7 +39,13 @@ const CallPage = () => {
         </div>
       </div>
       <div className={styles.constrols}>
-        <Button className={styles.btnClose} onClick={hangup} classNameText={styles.btnCloseText}>
+        <Button
+          className={styles.btnClose}
+          onClick={hangup}
+          classNameText={styles.btnCloseText}
+          caption="Выйти"
+          classNameCaption={styles.captionClose}
+        >
           <Icon name="close" />
         </Button>
         <Microfone
@@ -52,6 +58,8 @@ const CallPage = () => {
           onClick={handleLock}
           disabled={!isConnectedToPeer}
           className={clsx(styles.btnLock, { [styles.active]: lockActive })}
+          caption="Непрерывно"
+          classNameCaption={styles.captionLock}
         >
           <Icon name="lock" />
         </Button>

@@ -7,7 +7,7 @@ const IncomingCall = ({ digits, nickname, handleClick }: Props) => {
     <div className={styles.pulse} onClick={handleClick}>
       <div className={styles.text}>
         <div>#{digits}</div>
-        <div>${nickname}</div>
+        <div>{nickname}</div>
       </div>
     </div>
   );

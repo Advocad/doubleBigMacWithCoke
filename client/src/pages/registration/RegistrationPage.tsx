@@ -9,40 +9,37 @@ const RegistrationPage = () => {
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
 
-
-
-  const  handleDigits = (digits: string) => {
-
+  const handleDigits = (digits: string) => {
     if (digits.length > 4) return;
 
     setDigits(digits);
-  }
+  };
 
   const handleSignup = () => {
-    registerUser({ digits, password, nickname: name})
-    handleChangeStep()
-  }
+    registerUser({ digits, password, nickname: name });
+    handleChangeStep();
+  };
 
   const handleChangeStep = () => {
-    toggleForm(false)
-  }
-  
+    toggleForm(false);
+  };
 
   return (
     <div className={styles.container}>
       <div>
         <form>
-          <TextField placeholder="Код" value={digits} onChange={handleDigits}/>
-          <TextField placeholder="Имя" type="name" value={name} onChange={setName}/>
-          <TextField placeholder="Пароль" type="password" value={password} onChange={setPassword}/>
+          <TextField placeholder="Код" value={digits} onChange={handleDigits} />
+          <TextField placeholder="Имя" type="name" value={name} onChange={setName} />
+          <TextField placeholder="Пароль" type="password" value={password} onChange={setPassword} />
         </form>
       </div>
       <div>
         <Button fullWidth className={styles.btnColor} onClick={handleSignup}>
           Зарегистрировать
         </Button>
-        <div className={styles.text}>если у вас есть аккаунта</div>
-        <Button fullWidth onClick={handleChangeStep}>Вход</Button>
+        <Button fullWidth onClick={handleChangeStep}>
+          Вход
+        </Button>
       </div>
     </div>
   );
