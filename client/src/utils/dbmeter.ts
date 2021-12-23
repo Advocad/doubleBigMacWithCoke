@@ -1,5 +1,3 @@
-import { observable, action, makeObservable, computed } from 'mobx';
-
 class Dbmeter {
   constructor(private stream: MediaStream) {
     this.ctx = new AudioContext();

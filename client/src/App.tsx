@@ -19,6 +19,7 @@ function App() {
 
   useEffect(() => {
     checkLocalStoreAndLogIfNeeded();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
 
