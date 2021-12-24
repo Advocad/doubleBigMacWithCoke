@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { PageStep } from '../../components/PageConstructor/types';
 import { useStore } from '../../stores/rootStoreProvider';
 import { Button, TextField } from '../../ui';
 import styles from './Registration.module.scss';
 
 const RegistrationPage = () => {
-  const { registerUser, toggleForm } = useStore('userStore');
+  const { registerUser, error } = useStore('userStore');
+  const { changeStep } = useStore('routeStore');
   const [digits, setDigits] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -17,11 +19,13 @@ const RegistrationPage = () => {
 
   const handleSignup = () => {
     registerUser({ digits, password, nickname: name });
-    handleChangeStep();
+    if(!error) {
+      changeStep(PageStep.CONNECT);
+    }
   };
 
   const handleChangeStep = () => {
-    toggleForm(false);
+    changeStep(PageStep.LOGIN);
   };
 
   return (
