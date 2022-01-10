@@ -1,16 +1,19 @@
+import { observer } from 'mobx-react-lite';
 import { useState } from 'react';
+import { PageStep } from '../../components/PageConstructor/types';
 import { useStore } from '../../stores/rootStoreProvider';
 import { Button, TextField } from '../../ui';
 import styles from './Login.module.scss';
 
 const Login = () => {
-  const { loginUser, toggleForm } = useStore('userStore');
+  const { loginUser } = useStore('userStore');
+  const { changeStep } = useStore('routeStore');
 
   const [digits, setDigits] = useState('');
   const [password, setPassword] = useState('');
 
   const handleChangeStep = () => {
-    toggleForm(true);
+    changeStep(PageStep.REGISTRATION)
   };
 
   return (
@@ -40,8 +43,10 @@ const Login = () => {
   }
 
   function handleSignup() {
-    loginUser({ digits, password });
+    loginUser({ digits, password }).then(() => {
+      changeStep(PageStep.CONNECT);
+    })
   }
 };
 
-export { Login };
+export default observer(Login);

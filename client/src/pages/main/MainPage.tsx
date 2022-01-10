@@ -1,4 +1,5 @@
 import { observer } from 'mobx-react';
+import { PageStep } from '../../components/PageConstructor/types';
 import { useStore } from '../../stores/rootStoreProvider';
 import { Button } from '../../ui';
 
@@ -6,9 +7,9 @@ import styles from './Main.module.scss';
 import Logo from './shared/Logo/Logo';
 
 function MainPage() {
-  const { setHasVisited } = useStore('userStore');
+  const { changeStep } = useStore('routeStore');
   const handleChangeStep = () => {
-    setHasVisited()
+    changeStep(PageStep.LOGIN)
   }
 
   return (

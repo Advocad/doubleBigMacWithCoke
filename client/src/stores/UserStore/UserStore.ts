@@ -26,7 +26,6 @@ export default class UserStore {
   @observable isUserLoginning = true;
   @observable hasVisited = false;
   @observable recentCalls: { digits: string; nickname: string }[] = [];
-  @observable isRegistration = false;
 
   @computed
   get isUserLogged() {
@@ -101,12 +100,13 @@ export default class UserStore {
     if (!(credentials.digits && credentials.password)) {
       this.rootStore.stores.snackbarStore.pushMessage({ text: 'Поля не могут быть пустыми' });
 
-      return;
+      await Promise.reject();
     }
     if (answer.data.type === 'error') {
       this.error = 'Пароль не подходит, а может и цифр таких нет';
 
       this.rootStore.stores.snackbarStore.pushMessage({ text: this.error });
+      await Promise.reject();
     } else {
       this.user = answer.data.data;
 
@@ -130,10 +130,5 @@ export default class UserStore {
     } else {
       this.user = answer.data.data;
     }
-  }
-
-  @action.bound
-  public toggleForm(value: boolean) {
-    this.isRegistration = value;
   }
 }
